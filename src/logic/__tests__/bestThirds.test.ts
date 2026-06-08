@@ -2,13 +2,13 @@ import { describe, expect, it } from 'vitest'
 import type { GroupId, Standing, Team } from '@/types'
 import { rankThirdPlaces, selectBestThirds, type ThirdPlaceEntry } from '@/logic/bestThirds'
 
-function makeEntry(
+const makeEntry = (
   group: GroupId,
   points: number,
   goalDifference: number,
   goalsFor: number,
   fifaRanking: number,
-): ThirdPlaceEntry {
+): ThirdPlaceEntry => {
   const team: Team = {
     id: fifaRanking,
     name: `Team-${group}`,

@@ -5,7 +5,7 @@ interface ChampionBannerProps {
   champion: Team
 }
 
-export default function ChampionBanner({ champion }: ChampionBannerProps) {
+const ChampionBanner = ({ champion }: ChampionBannerProps) => {
   return (
     <div
       className="flex flex-col items-center gap-3 rounded-2xl border px-8 py-6 text-center"
@@ -27,3 +27,5 @@ export default function ChampionBanner({ champion }: ChampionBannerProps) {
     </div>
   )
 }
+
+export default ChampionBanner

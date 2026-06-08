@@ -11,17 +11,15 @@ interface KnockoutMatchProps {
   onSelectTeam: (teamId: number) => void
 }
 
-function emptyInput(): KoInput {
-  return {}
-}
+const emptyInput = (): KoInput => ({})
 
-function tieRow(
+const tieRow = (
   label: string,
   score: PartialScore | undefined,
   onChange: (side: 'home' | 'away', value: number | null) => void,
   homeLabel: string,
   awayLabel: string,
-) {
+) => {
   return (
     <div className="flex items-center justify-between gap-3">
       <span
@@ -46,11 +44,11 @@ function tieRow(
   )
 }
 
-export default function KnockoutMatch({
+const KnockoutMatch = ({
   match,
   highlightedTeamId,
   onSelectTeam,
-}: KnockoutMatchProps) {
+}: KnockoutMatchProps) => {
   const { teamById } = useTournament()
   const input = usePredictionStore(state => state.koInputs[match.id])
   const setKoInput = usePredictionStore(state => state.setKoInput)
@@ -60,15 +58,15 @@ export default function KnockoutMatch({
   const ready = home !== null && away !== null
   const current = input ?? emptyInput()
 
-  function patch(part: Partial<KoInput>) {
+  const patch = (part: Partial<KoInput>) => {
     setKoInput(match.id, { ...current, ...part })
   }
 
-  function updateScore(
+  const updateScore = (
     field: 'score' | 'extraTime' | 'penalties',
     side: 'home' | 'away',
     value: number | null,
-  ) {
+  ) => {
     const existing = current[field] ?? { home: null, away: null }
     patch({ [field]: { ...existing, [side]: value } })
   }
@@ -127,3 +125,5 @@ export default function KnockoutMatch({
     />
   )
 }
+
+export default KnockoutMatch

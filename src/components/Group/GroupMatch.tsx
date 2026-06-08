@@ -19,7 +19,7 @@ export const GroupMatch = ({
   const home = teamById.get(fixture.homeId)!
   const away = teamById.get(fixture.awayId)!
 
-  function update(side: 'home' | 'away', value: number | null) {
+  const update = (side: 'home' | 'away', value: number | null) => {
     const current = score ?? { home: null, away: null }
     setGroupScore(fixture.id, { ...current, [side]: value })
   }

@@ -2,31 +2,31 @@ import { describe, expect, it } from 'vitest'
 import type { GroupId, QualifiedTeam, Standing, Team } from '@/types'
 import { computeStats } from '@/logic/stats'
 
-function team(id: number, confederation: Team['confederation']): Team {
-  return {
-    id,
-    name: `T${id}`,
-    code: 't',
-    confederation,
-    fifaRanking: id,
-    group: 'A',
-  }
-}
+const team = (id: number, confederation: Team['confederation']): Team => ({
+  id,
+  name: `T${id}`,
+  code: 't',
+  confederation,
+  fifaRanking: id,
+  group: 'A',
+})
 
-function standing(t: Team, goalsFor: number, goalsAgainst: number): Standing {
-  return {
-    team: t,
-    played: 3,
-    won: 0,
-    drawn: 0,
-    lost: 0,
-    goalsFor,
-    goalsAgainst,
-    goalDifference: goalsFor - goalsAgainst,
-    points: 0,
-    rank: 1,
-  }
-}
+const standing = (
+  t: Team,
+  goalsFor: number,
+  goalsAgainst: number,
+): Standing => ({
+  team: t,
+  played: 3,
+  won: 0,
+  drawn: 0,
+  lost: 0,
+  goalsFor,
+  goalsAgainst,
+  goalDifference: goalsFor - goalsAgainst,
+  points: 0,
+  rank: 1,
+})
 
 const a = team(1, 'UEFA')
 const b = team(2, 'CAF')

@@ -11,7 +11,7 @@ const TABS: Array<{ key: ViewKey; label: string }> = [
   { key: 'stats', label: 'Statistiques' },
 ]
 
-export default function ViewTabs({ active, onChange }: ViewTabsProps) {
+const ViewTabs = ({ active, onChange }: ViewTabsProps) => {
   return (
     <div
       role="tablist"
@@ -41,3 +41,5 @@ export default function ViewTabs({ active, onChange }: ViewTabsProps) {
     </div>
   )
 }
+
+export default ViewTabs

@@ -7,13 +7,13 @@ interface ScoreInputProps {
 
 const MAX_GOALS = 99
 
-export default function ScoreInput({
+const ScoreInput = ({
   value,
   onChange,
   ariaLabel,
   disabled,
-}: ScoreInputProps) {
-  function handleChange(raw: string) {
+}: ScoreInputProps) => {
+  const handleChange = (raw: string) => {
     if (raw === '') {
       onChange(null)
       return
@@ -42,3 +42,5 @@ export default function ScoreInput({
     />
   )
 }
+
+export default ScoreInput

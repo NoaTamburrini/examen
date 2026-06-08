@@ -7,17 +7,17 @@ interface GroupTableProps {
   onSelectTeam?: (teamId: number) => void
 }
 
-function qualificationColor(rank: number): string {
+const qualificationColor = (rank: number): string => {
   if (rank <= 2) return 'var(--accent)'
   if (rank === 3) return 'var(--gold)'
   return 'var(--text-faint)'
 }
 
-export default function GroupTable({
+const GroupTable = ({
   standings,
   highlightedTeamId,
   onSelectTeam,
-}: GroupTableProps) {
+}: GroupTableProps) => {
   return (
     <table className="w-full border-collapse text-xs">
       <thead>
@@ -90,3 +90,5 @@ export default function GroupTable({
     </table>
   )
 }
+
+export default GroupTable

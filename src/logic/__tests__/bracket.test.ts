@@ -2,16 +2,14 @@ import { describe, expect, it } from 'vitest'
 import type { KoInputs, QualifiedTeam, Team } from '@/types'
 import { buildBracket, buildRound32, getChampion } from '@/logic/bracket'
 
-function fakeTeam(id: number): Team {
-  return {
-    id,
-    name: `T${id}`,
-    code: 't',
-    confederation: 'UEFA',
-    fifaRanking: id,
-    group: 'A',
-  }
-}
+const fakeTeam = (id: number): Team => ({
+  id,
+  name: `T${id}`,
+  code: 't',
+  confederation: 'UEFA',
+  fifaRanking: id,
+  group: 'A',
+})
 
 const qualified: QualifiedTeam[] = Array.from({ length: 32 }, (_, i) => ({
   team: fakeTeam(i + 1),

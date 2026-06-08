@@ -10,7 +10,7 @@ interface StatsViewProps {
   onSelectTeam: (teamId: number) => void
 }
 
-function Tile({
+const Tile = ({
   label,
   children,
   span,
@@ -18,7 +18,7 @@ function Tile({
   label: string
   children: ReactNode
   span?: boolean
-}) {
+}) => {
   return (
     <div
       className={`rounded-2xl border p-5 ${span ? 'sm:col-span-2' : ''}`}
@@ -36,7 +36,7 @@ function Tile({
   )
 }
 
-function TeamLine({
+const TeamLine = ({
   code,
   name,
   value,
@@ -46,7 +46,7 @@ function TeamLine({
   name: string
   value: string
   onClick?: () => void
-}) {
+}) => {
   return (
     <button
       onClick={onClick}
@@ -64,7 +64,7 @@ function TeamLine({
   )
 }
 
-export default function StatsView({ onSelectTeam }: StatsViewProps) {
+const StatsView = ({ onSelectTeam }: StatsViewProps) => {
   const { teamById } = useTournament()
   const standings = useStandings()
   const bracket = useBracket()
@@ -177,3 +177,5 @@ export default function StatsView({ onSelectTeam }: StatsViewProps) {
     </div>
   )
 }
+
+export default StatsView

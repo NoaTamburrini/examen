@@ -17,7 +17,7 @@ const CELL = 92
 const CARD_WIDTH = 224
 const CONNECTOR = 26
 
-function LockedNotice() {
+const LockedNotice = () => {
   const { groupIds, fixturesByGroup } = useTournament()
   const groupScores = usePredictionStore(state => state.groupScores)
   useStandings()
@@ -45,10 +45,7 @@ function LockedNotice() {
   )
 }
 
-export default function BracketView({
-  highlightedTeamId,
-  onSelectTeam,
-}: BracketViewProps) {
+const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
   const { teamById } = useTournament()
   const bracket = useBracket()
 
@@ -141,3 +138,5 @@ export default function BracketView({
     </div>
   )
 }
+
+export default BracketView

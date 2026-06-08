@@ -6,7 +6,7 @@ interface ThemeToggleProps {
   onToggle: () => void
 }
 
-export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
+const ThemeToggle = ({ theme, onToggle }: ThemeToggleProps) => {
   const isDark = theme === 'dark'
   return (
     <button
@@ -26,3 +26,5 @@ export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
     </button>
   )
 }
+
+export default ThemeToggle

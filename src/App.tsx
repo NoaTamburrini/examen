@@ -11,7 +11,7 @@ import { TournamentProvider } from '@/state/TournamentProvider'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useMemo, useState } from 'react'
 
-export default function App() {
+const App = () => {
   const parsed = useMemo(() => {
     try {
       return {
@@ -38,9 +38,25 @@ export default function App() {
     return <ErrorScreen message={parsed.error ?? 'Données introuvables.'} />
   }
 
-  function toggleHighlight(teamId: number) {
+  const toggleHighlight = (teamId: number) => {
     setHighlightedTeamId(current => (current === teamId ? null : teamId))
   }
+
+  const viewContent = {
+    groups: (
+      <GroupsView
+        highlightedTeamId={highlightedTeamId}
+        onSelectTeam={toggleHighlight}
+      />
+    ),
+    bracket: (
+      <BracketView
+        highlightedTeamId={highlightedTeamId}
+        onSelectTeam={toggleHighlight}
+      />
+    ),
+    stats: <StatsView onSelectTeam={toggleHighlight} />,
+  }[view]
 
   return (
     <TournamentProvider tournament={parsed.tournament}>
@@ -75,20 +91,10 @@ export default function App() {
           <ViewTabs active={view} onChange={setView} />
         </div>
 
-        {view === 'groups' ? (
-          <GroupsView
-            highlightedTeamId={highlightedTeamId}
-            onSelectTeam={toggleHighlight}
-          />
-        ) : null}
-        {view === 'bracket' ? (
-          <BracketView
-            highlightedTeamId={highlightedTeamId}
-            onSelectTeam={toggleHighlight}
-          />
-        ) : null}
-        {view === 'stats' ? <StatsView onSelectTeam={toggleHighlight} /> : null}
+        {viewContent}
       </div>
     </TournamentProvider>
   )
 }
+
+export default App

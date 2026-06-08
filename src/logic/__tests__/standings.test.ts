@@ -12,9 +12,9 @@ const teams: Team[] = [
 
 const fixtures = buildGroupFixtures('A', teams)
 
-function scoreFor(homeId: number, awayId: number): string {
+const scoreFor = (homeId: number, awayId: number): string => {
   const fixture = fixtures.find(
-    (f) =>
+    f =>
       (f.homeId === homeId && f.awayId === awayId) ||
       (f.homeId === awayId && f.awayId === homeId),
   )
@@ -22,21 +22,21 @@ function scoreFor(homeId: number, awayId: number): string {
   return fixture.id
 }
 
-function scores(
+const scores = (
   results: Array<[home: number, away: number, hg: number, ag: number]>,
-): GroupScores {
+): GroupScores => {
   const out: GroupScores = {}
   for (const [home, away, hg, ag] of results) {
-    const fixture = fixtures.find((f) => f.homeId === home && f.awayId === away)
+    const fixture = fixtures.find(f => f.homeId === home && f.awayId === away)
     if (!fixture) throw new Error(`Pas de match ${home} (dom) vs ${away} (ext)`)
     out[fixture.id] = { home: hg, away: ag }
   }
   return out
 }
 
-function order(standing: ReturnType<typeof computeGroupStanding>): number[] {
-  return standing.map((row) => row.team.id)
-}
+const order = (
+  standing: ReturnType<typeof computeGroupStanding>,
+): number[] => standing.map(row => row.team.id)
 
 describe('computeGroupStanding', () => {
   it('classe par points en premier', () => {

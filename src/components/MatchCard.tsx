@@ -21,11 +21,10 @@ interface MatchCardProps {
   footer?: ReactNode
 }
 
-function isWinner(slot: TeamSlot, winnerId?: number | null): boolean {
-  return Boolean(slot.team && winnerId != null && slot.team.id === winnerId)
-}
+const isWinner = (slot: TeamSlot, winnerId?: number | null): boolean =>
+  Boolean(slot.team && winnerId != null && slot.team.id === winnerId)
 
-export default function MatchCard({
+const MatchCard = ({
   home,
   away,
   winnerId,
@@ -33,10 +32,10 @@ export default function MatchCard({
   highlightedTeamId,
   disabled,
   footer,
-}: MatchCardProps) {
+}: MatchCardProps) => {
   const reduceMotion = useReducedMotion()
 
-  function renderRow(slot: TeamSlot) {
+  const renderRow = (slot: TeamSlot) => {
     const winner = isWinner(slot, winnerId)
     const highlighted = slot.team != null && highlightedTeamId === slot.team.id
     const clickable = Boolean(onSelectTeam && slot.team)
@@ -121,3 +120,5 @@ export default function MatchCard({
     </div>
   )
 }
+
+export default MatchCard
