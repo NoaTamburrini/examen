@@ -39,16 +39,16 @@ export default function App() {
 
   return (
     <TournamentProvider tournament={parsed.tournament}>
-      <div className="mx-auto max-w-[1400px] px-4 py-6 md:px-6 md:py-8">
-        <header className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div className="mx-auto max-w-[1600px] px-4 py-5 md:px-6">
+        <header className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <p
-              className="text-xs uppercase tracking-[0.3em]"
+              className="text-[10px] uppercase tracking-[0.3em]"
               style={{ color: 'var(--accent)' }}
             >
               {parsed.tournament.tournament}
             </p>
-            <h1 className="font-display text-3xl font-bold md:text-4xl">
+            <h1 className="font-display text-2xl font-bold md:text-3xl">
               World Cup Predictor
             </h1>
           </div>

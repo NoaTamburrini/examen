@@ -59,19 +59,19 @@ function GroupCard({
 
   return (
     <section
-      className="rounded-2xl border p-4"
+      className="rounded-xl border p-3"
       style={{
         background: 'var(--bg-elevated)',
         borderColor: 'var(--border)',
         boxShadow: 'var(--shadow)',
       }}
     >
-      <header className="mb-3 flex items-center justify-between">
-        <h2 className="font-display text-lg font-bold tracking-wide">
+      <header className="mb-2 flex items-center justify-between">
+        <h2 className="font-display text-base font-bold tracking-wide">
           Groupe {group}
         </h2>
         <span
-          className="rounded-full px-2 py-0.5 text-xs font-semibold"
+          className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
           style={{
             background: complete ? 'var(--accent-soft)' : 'var(--bg-row)',
             color: complete ? 'var(--accent)' : 'var(--text-faint)',
@@ -87,7 +87,7 @@ function GroupCard({
         onSelectTeam={onSelectTeam}
       />
 
-      <div className="mt-4 grid gap-2">
+      <div className="mt-3 grid gap-1.5">
         {fixtures.map((fixture) => (
           <GroupMatch
             key={fixture.id}
@@ -107,7 +107,7 @@ export default function GroupsView({
 }: GroupsViewProps) {
   const { groupIds } = useTournament()
   return (
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {groupIds.map((group) => (
         <GroupCard
           key={group}

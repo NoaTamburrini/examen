@@ -33,7 +33,7 @@ export default function ScoreInput({
       disabled={disabled}
       value={value ?? ''}
       onChange={(event) => handleChange(event.target.value)}
-      className="tabular h-9 w-10 rounded-lg text-center text-base font-semibold outline-none transition focus:ring-2 disabled:opacity-40"
+      className="tabular h-8 w-8 rounded-md text-center text-sm font-semibold outline-none transition focus:ring-2 disabled:opacity-40"
       style={{
         background: 'var(--bg-row)',
         color: 'var(--text)',

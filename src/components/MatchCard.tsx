@@ -44,7 +44,7 @@ export default function MatchCard({
 
     return (
       <div
-        className="flex items-center gap-2.5 px-3 py-2 transition"
+        className="flex items-center gap-2 px-2.5 py-1 transition"
         style={{
           background: winner ? 'var(--accent-soft)' : 'transparent',
           boxShadow: highlighted
@@ -58,7 +58,7 @@ export default function MatchCard({
           type="button"
           disabled={!clickable}
           onClick={() => slot.team && onSelectTeam?.(slot.team.id)}
-          className="flex min-w-0 flex-1 items-center gap-2.5 text-left disabled:cursor-default"
+          className="flex min-w-0 flex-1 items-center gap-2 text-left disabled:cursor-default"
         >
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span
@@ -67,11 +67,11 @@ export default function MatchCard({
               animate={{ opacity: 1, x: 0 }}
               exit={reduceMotion ? undefined : { opacity: 0, x: 8 }}
               transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-              className="flex min-w-0 flex-1 items-center gap-2.5"
+              className="flex min-w-0 flex-1 items-center gap-2"
             >
               {slot.team ? (
                 <>
-                  <Flag code={slot.team.code} name={slot.team.name} size={22} />
+                  <Flag code={slot.team.code} name={slot.team.name} size={18} />
                   <span
                     className="truncate text-sm"
                     style={{
