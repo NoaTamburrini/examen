@@ -1,5 +1,5 @@
 import type { GroupFixture, GroupId } from '@/types'
-import { useTournament } from '@/state/TournamentProvider'
+import { useTournament } from '@/state/tournamentContext'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useStandings } from '@/hooks/useStandings'
 import { isGroupComplete } from '@/logic/standings'

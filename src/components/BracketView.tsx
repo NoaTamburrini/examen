@@ -1,5 +1,5 @@
 import type { KnockoutRound } from '@/types'
-import { useTournament } from '@/state/TournamentProvider'
+import { useTournament } from '@/state/tournamentContext'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useBracket } from '@/hooks/useBracket'
 import { useStandings } from '@/hooks/useStandings'

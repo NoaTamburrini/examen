@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import type { BracketMatch, KnockoutRound, QualifiedTeam } from '@/types'
 import { buildBracket, collectQualified, getChampion } from '@/logic/bracket'
 import { isGroupComplete } from '@/logic/standings'
-import { useTournament } from '@/state/TournamentProvider'
+import { useTournament } from '@/state/tournamentContext'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useStandings } from '@/hooks/useStandings'
 

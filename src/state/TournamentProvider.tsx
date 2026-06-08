@@ -1,18 +1,11 @@
-import { createContext, useContext, useMemo, type ReactNode } from 'react'
-import type { GroupFixture, GroupId, Team, Tournament } from '@/types'
+import { useMemo, type ReactNode } from 'react'
+import type { GroupFixture, GroupId, Tournament } from '@/types'
 import { buildAllFixtures } from '@/logic/fixtures'
 import { GROUP_IDS, indexTeamsById, teamsByGroup } from '@/logic/loadData'
-
-interface TournamentContextValue {
-  tournament: Tournament
-  groupIds: GroupId[]
-  teamById: Map<number, Team>
-  teamsByGroup: Record<GroupId, Team[]>
-  fixtures: GroupFixture[]
-  fixturesByGroup: Record<GroupId, GroupFixture[]>
-}
-
-const TournamentContext = createContext<TournamentContextValue | null>(null)
+import {
+  TournamentContext,
+  type TournamentContextValue,
+} from '@/state/tournamentContext'
 
 export function TournamentProvider({
   tournament,
@@ -42,12 +35,4 @@ export function TournamentProvider({
       {children}
     </TournamentContext.Provider>
   )
-}
-
-export function useTournament(): TournamentContextValue {
-  const value = useContext(TournamentContext)
-  if (!value) {
-    throw new Error('useTournament doit être utilisé dans un TournamentProvider.')
-  }
-  return value
 }

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
-import { useTournament } from '@/state/TournamentProvider'
+import { useTournament } from '@/state/tournamentContext'
 import { useStandings } from '@/hooks/useStandings'
 import { useBracket } from '@/hooks/useBracket'
 import { computeStats } from '@/logic/stats'

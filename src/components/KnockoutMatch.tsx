@@ -1,5 +1,5 @@
 import type { BracketMatch, KoInput, PartialScore } from '@/types'
-import { useTournament } from '@/state/TournamentProvider'
+import { useTournament } from '@/state/tournamentContext'
 import { usePredictionStore } from '@/state/predictionStore'
 import { resolveKnockout, toKoEntry } from '@/logic/knockout'
 import MatchCard from '@/components/MatchCard'
