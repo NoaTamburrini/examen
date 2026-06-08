@@ -1,9 +1,24 @@
 export type GroupId =
-  | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
-  | 'G' | 'H' | 'I' | 'J' | 'K' | 'L'
+  | 'A'
+  | 'B'
+  | 'C'
+  | 'D'
+  | 'E'
+  | 'F'
+  | 'G'
+  | 'H'
+  | 'I'
+  | 'J'
+  | 'K'
+  | 'L'
 
 export type Confederation =
-  | 'UEFA' | 'CONMEBOL' | 'CONCACAF' | 'CAF' | 'AFC' | 'OFC'
+  | 'UEFA'
+  | 'CONMEBOL'
+  | 'CONCACAF'
+  | 'CAF'
+  | 'AFC'
+  | 'OFC'
 
 export interface Team {
   id: number
@@ -16,8 +31,12 @@ export interface Team {
 }
 
 export type Tiebreaker =
-  | 'points' | 'goalDifference' | 'goalsScored'
-  | 'headToHead' | 'fairPlay' | 'fifaRanking'
+  | 'points'
+  | 'goalDifference'
+  | 'goalsScored'
+  | 'headToHead'
+  | 'fairPlay'
+  | 'fifaRanking'
 
 export interface TournamentFormat {
   totalTeams: number

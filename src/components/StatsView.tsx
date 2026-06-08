@@ -1,10 +1,10 @@
+import Flag from '@/components/Flag'
+import { useBracket } from '@/hooks/useBracket'
+import { useStandings } from '@/hooks/useStandings'
+import { computeStats } from '@/logic/stats'
+import { useTournament } from '@/state/tournamentContext'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
-import { useTournament } from '@/state/tournamentContext'
-import { useStandings } from '@/hooks/useStandings'
-import { useBracket } from '@/hooks/useBracket'
-import { computeStats } from '@/logic/stats'
-import Flag from '@/components/Flag'
 
 interface StatsViewProps {
   onSelectTeam: (teamId: number) => void
@@ -25,12 +25,10 @@ function Tile({
       style={{
         background: 'var(--bg-elevated)',
         borderColor: 'var(--border)',
-      }}
-    >
+      }}>
       <p
         className="mb-3 text-xs font-semibold uppercase tracking-[0.18em]"
-        style={{ color: 'var(--text-faint)' }}
-      >
+        style={{ color: 'var(--text-faint)' }}>
         {label}
       </p>
       {children}
@@ -52,13 +50,14 @@ function TeamLine({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center justify-between gap-3 text-left"
-    >
+      className="flex w-full items-center justify-between gap-3 text-left">
       <span className="flex items-center gap-2.5">
         <Flag code={code} name={name} size={28} />
         <span className="font-display text-lg font-bold">{name}</span>
       </span>
-      <span className="tabular text-lg font-bold" style={{ color: 'var(--accent)' }}>
+      <span
+        className="tabular text-lg font-bold"
+        style={{ color: 'var(--accent)' }}>
         {value}
       </span>
     </button>
@@ -79,9 +78,13 @@ export default function StatsView({ onSelectTeam }: StatsViewProps) {
     return (
       <div
         className="mx-auto max-w-md rounded-2xl border p-8 text-center"
-        style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}
-      >
-        <h2 className="font-display text-xl font-bold">Pas encore de données</h2>
+        style={{
+          background: 'var(--bg-elevated)',
+          borderColor: 'var(--border)',
+        }}>
+        <h2 className="font-display text-xl font-bold">
+          Pas encore de données
+        </h2>
         <p className="mt-3 text-sm" style={{ color: 'var(--text-muted)' }}>
           Saisissez des scores pour voir apparaître les statistiques.
         </p>
@@ -126,7 +129,9 @@ export default function StatsView({ onSelectTeam }: StatsViewProps) {
 
       <Tile label="Buts en phase de groupes">
         <p className="font-display text-4xl font-bold">{stats.totalGoals}</p>
-        <p className="mt-1 tabular text-sm" style={{ color: 'var(--text-muted)' }}>
+        <p
+          className="mt-1 tabular text-sm"
+          style={{ color: 'var(--text-muted)' }}>
           {stats.averageGoals.toFixed(2)} / match
         </p>
       </Tile>
@@ -134,18 +139,18 @@ export default function StatsView({ onSelectTeam }: StatsViewProps) {
       {stats.qualifiedByConfederation.length > 0 ? (
         <Tile label="Confédérations qualifiées" span>
           <ul className="grid gap-2">
-            {stats.qualifiedByConfederation.map((row) => (
+            {stats.qualifiedByConfederation.map(row => (
               <li
                 key={row.confederation}
-                className="flex items-center justify-between gap-3"
-              >
-                <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                className="flex items-center justify-between gap-3">
+                <span
+                  className="text-sm font-medium"
+                  style={{ color: 'var(--text)' }}>
                   {row.confederation}
                 </span>
                 <span
                   className="tabular text-sm font-bold"
-                  style={{ color: 'var(--accent)' }}
-                >
+                  style={{ color: 'var(--accent)' }}>
                   {row.count}
                 </span>
               </li>
@@ -157,7 +162,7 @@ export default function StatsView({ onSelectTeam }: StatsViewProps) {
       {stats.finalists.length === 2 ? (
         <Tile label="Finalistes">
           <div className="grid gap-2">
-            {stats.finalists.map((finalist) => (
+            {stats.finalists.map(finalist => (
               <TeamLine
                 key={finalist.id}
                 code={finalist.code}

@@ -60,8 +60,7 @@ export function resolveKnockout(entry: KoEntry): KoOutcome {
   }
   if (afterExtra && afterExtra.home !== afterExtra.away) {
     return {
-      winnerId:
-        afterExtra.home > afterExtra.away ? entry.homeId : entry.awayId,
+      winnerId: afterExtra.home > afterExtra.away ? entry.homeId : entry.awayId,
       needsExtraTime: false,
       needsPenalties: false,
     }

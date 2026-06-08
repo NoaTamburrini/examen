@@ -1,3 +1,9 @@
+import {
+  rankThirdPlaces,
+  selectBestThirds,
+  type ThirdPlaceEntry,
+} from '@/logic/bestThirds'
+import { buildKoResult, toKoEntry } from '@/logic/knockout'
 import type {
   BracketMatch,
   GroupId,
@@ -6,8 +12,6 @@ import type {
   QualifiedTeam,
   Standing,
 } from '@/types'
-import { rankThirdPlaces, selectBestThirds, type ThirdPlaceEntry } from '@/logic/bestThirds'
-import { buildKoResult, toKoEntry } from '@/logic/knockout'
 
 export const ROUND_ORDER: KnockoutRound[] = ['R32', 'R16', 'QF', 'SF', 'F']
 
@@ -59,12 +63,12 @@ export function collectQualified(
   winners.sort((a, b) => compareForSeeding(a.standing, b.standing))
   runnersUp.sort((a, b) => compareForSeeding(a.standing, b.standing))
 
-  const qualifiedWinners: QualifiedTeam[] = winners.map((entry) => ({
+  const qualifiedWinners: QualifiedTeam[] = winners.map(entry => ({
     team: entry.standing.team,
     group: entry.group,
     position: 1,
   }))
-  const qualifiedRunners: QualifiedTeam[] = runnersUp.map((entry) => ({
+  const qualifiedRunners: QualifiedTeam[] = runnersUp.map(entry => ({
     team: entry.standing.team,
     group: entry.group,
     position: 2,
@@ -151,7 +155,7 @@ export function buildBracket(
 
     if (round === 'F') break
     const next = ROUND_ORDER[ROUND_ORDER.indexOf(round) + 1]
-    bracket[round].forEach((match) => {
+    bracket[round].forEach(match => {
       const target = bracket[next][Math.floor(match.slot / 2)]
       const side = match.slot % 2 === 0 ? 'home' : 'away'
       if (side === 'home') {

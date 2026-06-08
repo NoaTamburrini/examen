@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import type { Team } from '@/types'
 import Flag from '@/components/Flag'
 import ScoreInput from '@/components/ScoreInput'
+import type { Team } from '@/types'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import type { ReactNode } from 'react'
 
 interface TeamSlot {
   team: Team | null
@@ -38,8 +38,7 @@ export default function MatchCard({
 
   function renderRow(slot: TeamSlot) {
     const winner = isWinner(slot, winnerId)
-    const highlighted =
-      slot.team != null && highlightedTeamId === slot.team.id
+    const highlighted = slot.team != null && highlightedTeamId === slot.team.id
     const clickable = Boolean(onSelectTeam && slot.team)
 
     return (
@@ -52,14 +51,12 @@ export default function MatchCard({
             : winner
               ? 'inset 3px 0 0 var(--accent)'
               : 'inset 3px 0 0 transparent',
-        }}
-      >
+        }}>
         <button
           type="button"
           disabled={!clickable}
           onClick={() => slot.team && onSelectTeam?.(slot.team.id)}
-          className="flex min-w-0 flex-1 items-center gap-2 text-left disabled:cursor-default"
-        >
+          className="flex min-w-0 flex-1 items-center gap-2 text-left disabled:cursor-default">
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span
               key={slot.team?.id ?? 'tbd'}
@@ -67,8 +64,7 @@ export default function MatchCard({
               animate={{ opacity: 1, x: 0 }}
               exit={reduceMotion ? undefined : { opacity: 0, x: 8 }}
               transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-              className="flex min-w-0 flex-1 items-center gap-2"
-            >
+              className="flex min-w-0 flex-1 items-center gap-2">
               {slot.team ? (
                 <>
                   <Flag code={slot.team.code} name={slot.team.name} size={18} />
@@ -77,16 +73,14 @@ export default function MatchCard({
                     style={{
                       color: winner ? 'var(--text)' : 'var(--text-muted)',
                       fontWeight: winner ? 700 : 500,
-                    }}
-                  >
+                    }}>
                     {slot.team.name}
                   </span>
                 </>
               ) : (
                 <span
                   className="truncate text-sm italic"
-                  style={{ color: 'var(--text-faint)' }}
-                >
+                  style={{ color: 'var(--text-faint)' }}>
                   {slot.placeholder ?? 'À déterminer'}
                 </span>
               )}
@@ -113,16 +107,14 @@ export default function MatchCard({
       style={{
         background: 'var(--bg-elevated)',
         borderColor: containsHighlighted ? 'var(--accent)' : 'var(--border)',
-      }}
-    >
+      }}>
       {renderRow(home)}
       <div style={{ height: 1, background: 'var(--border)' }} />
       {renderRow(away)}
       {footer ? (
         <div
           className="border-t px-3 py-2"
-          style={{ borderColor: 'var(--border)', background: 'var(--bg-row)' }}
-        >
+          style={{ borderColor: 'var(--border)', background: 'var(--bg-row)' }}>
           {footer}
         </div>
       ) : null}

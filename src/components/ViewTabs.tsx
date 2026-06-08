@@ -17,9 +17,11 @@ export default function ViewTabs({ active, onChange }: ViewTabsProps) {
       role="tablist"
       aria-label="Navigation"
       className="inline-flex rounded-xl p-1"
-      style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}
-    >
-      {TABS.map((tab) => {
+      style={{
+        background: 'var(--bg-elevated)',
+        border: '1px solid var(--border)',
+      }}>
+      {TABS.map(tab => {
         const selected = active === tab.key
         return (
           <button
@@ -31,8 +33,7 @@ export default function ViewTabs({ active, onChange }: ViewTabsProps) {
             style={{
               background: selected ? 'var(--accent)' : 'transparent',
               color: selected ? 'var(--accent-contrast)' : 'var(--text-muted)',
-            }}
-          >
+            }}>
             {tab.label}
           </button>
         )

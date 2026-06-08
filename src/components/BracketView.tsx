@@ -1,12 +1,12 @@
-import type { KnockoutRound } from '@/types'
-import { useTournament } from '@/state/tournamentContext'
-import { usePredictionStore } from '@/state/predictionStore'
+import ChampionBanner from '@/components/ChampionBanner'
+import KnockoutMatch from '@/components/KnockoutMatch'
 import { useBracket } from '@/hooks/useBracket'
 import { useStandings } from '@/hooks/useStandings'
-import { isGroupComplete } from '@/logic/standings'
 import { ROUND_LABELS, ROUND_ORDER } from '@/logic/bracket'
-import KnockoutMatch from '@/components/KnockoutMatch'
-import ChampionBanner from '@/components/ChampionBanner'
+import { isGroupComplete } from '@/logic/standings'
+import { usePredictionStore } from '@/state/predictionStore'
+import { useTournament } from '@/state/tournamentContext'
+import type { KnockoutRound } from '@/types'
 
 interface BracketViewProps {
   highlightedTeamId: number | null
@@ -19,22 +19,26 @@ const CONNECTOR = 26
 
 function LockedNotice() {
   const { groupIds, fixturesByGroup } = useTournament()
-  const groupScores = usePredictionStore((state) => state.groupScores)
+  const groupScores = usePredictionStore(state => state.groupScores)
   useStandings()
-  const done = groupIds.filter((group) =>
+  const done = groupIds.filter(group =>
     isGroupComplete(fixturesByGroup[group], groupScores),
   ).length
 
   return (
     <div
       className="mx-auto max-w-md rounded-2xl border p-8 text-center"
-      style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}
-    >
+      style={{
+        background: 'var(--bg-elevated)',
+        borderColor: 'var(--border)',
+      }}>
       <h2 className="font-display text-xl font-bold">Tableau verrouillé</h2>
       <p className="mt-3 text-sm" style={{ color: 'var(--text-muted)' }}>
         Complétez les 12 groupes pour générer les 16èmes de finale.
       </p>
-      <p className="mt-4 tabular text-2xl font-bold" style={{ color: 'var(--accent)' }}>
+      <p
+        className="mt-4 tabular text-2xl font-bold"
+        style={{ color: 'var(--accent)' }}>
         {done} / {groupIds.length}
       </p>
     </div>
@@ -69,8 +73,7 @@ export default function BracketView({
               <div key={round} className="flex flex-col">
                 <h3
                   className="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.18em]"
-                  style={{ color: 'var(--text-faint)' }}
-                >
+                  style={{ color: 'var(--text-faint)' }}>
                   {ROUND_LABELS[round]}
                 </h3>
                 <div className="flex flex-col">
@@ -78,8 +81,7 @@ export default function BracketView({
                     <div
                       key={match.id}
                       className="flex items-center"
-                      style={{ height: rowHeight }}
-                    >
+                      style={{ height: rowHeight }}>
                       {roundIndex > 0 ? (
                         <div
                           aria-hidden
@@ -94,8 +96,7 @@ export default function BracketView({
 
                       <div
                         className="flex shrink-0 items-center justify-center px-3"
-                        style={{ width: CARD_WIDTH + 24 }}
-                      >
+                        style={{ width: CARD_WIDTH + 24 }}>
                         <div style={{ width: CARD_WIDTH }}>
                           <KnockoutMatch
                             match={match}
@@ -122,8 +123,10 @@ export default function BracketView({
                                 ? '2px solid var(--border-strong)'
                                 : 'none',
                             borderTopRightRadius: matchIndex % 2 === 0 ? 10 : 0,
-                            borderBottomRightRadius: matchIndex % 2 === 1 ? 10 : 0,
-                            alignSelf: matchIndex % 2 === 0 ? 'flex-end' : 'flex-start',
+                            borderBottomRightRadius:
+                              matchIndex % 2 === 1 ? 10 : 0,
+                            alignSelf:
+                              matchIndex % 2 === 0 ? 'flex-end' : 'flex-start',
                           }}
                         />
                       ) : null}

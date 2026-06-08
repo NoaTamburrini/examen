@@ -1,9 +1,9 @@
-import type { BracketMatch, KoInput, PartialScore } from '@/types'
-import { useTournament } from '@/state/tournamentContext'
-import { usePredictionStore } from '@/state/predictionStore'
-import { resolveKnockout, toKoEntry } from '@/logic/knockout'
 import MatchCard from '@/components/MatchCard'
 import ScoreInput from '@/components/ScoreInput'
+import { resolveKnockout, toKoEntry } from '@/logic/knockout'
+import { usePredictionStore } from '@/state/predictionStore'
+import { useTournament } from '@/state/tournamentContext'
+import type { BracketMatch, KoInput, PartialScore } from '@/types'
 
 interface KnockoutMatchProps {
   match: BracketMatch
@@ -24,19 +24,21 @@ function tieRow(
 ) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-xs font-semibold" style={{ color: 'var(--text-muted)' }}>
+      <span
+        className="text-xs font-semibold"
+        style={{ color: 'var(--text-muted)' }}>
         {label}
       </span>
       <div className="flex items-center gap-2">
         <ScoreInput
           value={score?.home ?? null}
-          onChange={(v) => onChange('home', v)}
+          onChange={v => onChange('home', v)}
           ariaLabel={`${label} ${homeLabel}`}
         />
         <span style={{ color: 'var(--text-faint)' }}>-</span>
         <ScoreInput
           value={score?.away ?? null}
-          onChange={(v) => onChange('away', v)}
+          onChange={v => onChange('away', v)}
           ariaLabel={`${label} ${awayLabel}`}
         />
       </div>
@@ -50,8 +52,8 @@ export default function KnockoutMatch({
   onSelectTeam,
 }: KnockoutMatchProps) {
   const { teamById } = useTournament()
-  const input = usePredictionStore((state) => state.koInputs[match.id])
-  const setKoInput = usePredictionStore((state) => state.setKoInput)
+  const input = usePredictionStore(state => state.koInputs[match.id])
+  const setKoInput = usePredictionStore(state => state.setKoInput)
 
   const home = match.homeId !== null ? teamById.get(match.homeId)! : null
   const away = match.awayId !== null ? teamById.get(match.awayId)! : null
@@ -109,13 +111,13 @@ export default function KnockoutMatch({
         team: home,
         placeholder: match.homeSource,
         score: current.score?.home ?? null,
-        onScore: (v) => updateScore('score', 'home', v),
+        onScore: v => updateScore('score', 'home', v),
       }}
       away={{
         team: away,
         placeholder: match.awaySource,
         score: current.score?.away ?? null,
-        onScore: (v) => updateScore('score', 'away', v),
+        onScore: v => updateScore('score', 'away', v),
       }}
       winnerId={match.winnerId}
       onSelectTeam={onSelectTeam}

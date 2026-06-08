@@ -1,9 +1,4 @@
-import type {
-  Confederation,
-  GroupId,
-  Team,
-  Tournament,
-} from '@/types'
+import type { Confederation, GroupId, Team, Tournament } from '@/types'
 
 export class TournamentDataError extends Error {
   constructor(message: string) {
@@ -13,11 +8,27 @@ export class TournamentDataError extends Error {
 }
 
 const GROUP_IDS: GroupId[] = [
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
 ]
 
 const CONFEDERATIONS: Confederation[] = [
-  'UEFA', 'CONMEBOL', 'CONCACAF', 'CAF', 'AFC', 'OFC',
+  'UEFA',
+  'CONMEBOL',
+  'CONCACAF',
+  'CAF',
+  'AFC',
+  'OFC',
 ]
 
 function isTeam(value: unknown): value is Team {
@@ -64,7 +75,7 @@ export function parseTournament(raw: unknown): Tournament {
   }
 
   for (const groupId of GROUP_IDS) {
-    const members = teams.filter((team) => team.group === groupId)
+    const members = teams.filter(team => team.group === groupId)
     if (members.length !== format.teamsPerGroup) {
       throw new TournamentDataError(
         `Le groupe ${groupId} contient ${members.length} équipes au lieu de ${format.teamsPerGroup}.`,
@@ -76,14 +87,14 @@ export function parseTournament(raw: unknown): Tournament {
 }
 
 export function indexTeamsById(teams: Team[]): Map<number, Team> {
-  return new Map(teams.map((team) => [team.id, team]))
+  return new Map(teams.map(team => [team.id, team]))
 }
 
 export function teamsByGroup(teams: Team[]): Record<GroupId, Team[]> {
   const result = {} as Record<GroupId, Team[]>
   for (const groupId of GROUP_IDS) {
     result[groupId] = teams
-      .filter((team) => team.group === groupId)
+      .filter(team => team.group === groupId)
       .sort((a, b) => a.fifaRanking - b.fifaRanking)
   }
   return result

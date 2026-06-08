@@ -1,10 +1,10 @@
-import { useMemo } from 'react'
-import type { BracketMatch, KnockoutRound, QualifiedTeam } from '@/types'
+import { useStandings } from '@/hooks/useStandings'
 import { buildBracket, collectQualified, getChampion } from '@/logic/bracket'
 import { isGroupComplete } from '@/logic/standings'
-import { useTournament } from '@/state/tournamentContext'
 import { usePredictionStore } from '@/state/predictionStore'
-import { useStandings } from '@/hooks/useStandings'
+import { useTournament } from '@/state/tournamentContext'
+import type { BracketMatch, KnockoutRound, QualifiedTeam } from '@/types'
+import { useMemo } from 'react'
 
 export interface BracketData {
   locked: boolean
@@ -16,12 +16,12 @@ export interface BracketData {
 export function useBracket(): BracketData {
   const { groupIds, fixturesByGroup, tournament } = useTournament()
   const standings = useStandings()
-  const groupScores = usePredictionStore((state) => state.groupScores)
-  const koInputs = usePredictionStore((state) => state.koInputs)
+  const groupScores = usePredictionStore(state => state.groupScores)
+  const koInputs = usePredictionStore(state => state.koInputs)
 
   const allComplete = useMemo(
     () =>
-      groupIds.every((group) =>
+      groupIds.every(group =>
         isGroupComplete(fixturesByGroup[group], groupScores),
       ),
     [groupIds, fixturesByGroup, groupScores],

@@ -81,7 +81,7 @@ export function computeStats(
     const final = rounds.F[0]
     finalists = [final.homeId, final.awayId]
       .filter((id): id is number => id !== null)
-      .map((id) => teamById.get(id)!)
+      .map(id => teamById.get(id)!)
     champion = final.winnerId !== null ? teamById.get(final.winnerId)! : null
   }
 
