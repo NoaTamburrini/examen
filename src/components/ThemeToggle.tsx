@@ -1,5 +1,5 @@
 import type { Theme } from '@/hooks/useTheme'
-import { Moon, Sun } from '@phosphor-icons/react'
+import { MoonIcon, SunIcon } from '@phosphor-icons/react'
 
 interface ThemeToggleProps {
   theme: Theme
@@ -19,9 +19,9 @@ export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
         color: 'var(--text-muted)',
       }}>
       {isDark ? (
-        <Sun size={18} weight="bold" />
+        <SunIcon size={18} weight="bold" />
       ) : (
-        <Moon size={18} weight="bold" />
+        <MoonIcon size={18} weight="bold" />
       )}
     </button>
   )
