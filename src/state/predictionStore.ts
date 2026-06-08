@@ -8,6 +8,10 @@ interface PredictionState {
   setGroupScore: (matchId: string, score: PartialScore | null) => void
   setKoInput: (matchId: string, input: KoInput | null) => void
   clearKoInputs: (matchIds: string[]) => void
+  loadScenario: (scenario: {
+    groupScores: GroupScores
+    koInputs: KoInputs
+  }) => void
   reset: () => void
 }
 
@@ -62,6 +66,12 @@ export const usePredictionStore = create<PredictionState>()(
             }
           }
           return changed ? { koInputs: next } : state
+        }),
+
+      loadScenario: scenario =>
+        set({
+          groupScores: scenario.groupScores,
+          koInputs: scenario.koInputs,
         }),
 
       reset: () => set({ groupScores: {}, koInputs: {} }),
