@@ -1,4 +1,4 @@
-import type { KnockoutRound } from '@/types'
+import type { BracketMatch, KnockoutRound } from '@/types'
 import { useTournament } from '@/state/tournamentContext'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useBracket } from '@/hooks/useBracket'
@@ -12,6 +12,8 @@ interface BracketViewProps {
   highlightedTeamId: number | null
   onSelectTeam: (teamId: number) => void
 }
+
+const CONNECTOR_WIDTH = 28
 
 function LockedNotice() {
   const { groupIds, fixturesByGroup } = useTournament()
@@ -37,6 +39,73 @@ function LockedNotice() {
   )
 }
 
+function MatchWrapper({
+  match,
+  isFirstRound,
+  isLastRound,
+  pairPosition,
+  highlightedTeamId,
+  onSelectTeam,
+}: {
+  match: BracketMatch
+  isFirstRound: boolean
+  isLastRound: boolean
+  pairPosition: 'top' | 'bottom'
+  highlightedTeamId: number | null
+  onSelectTeam: (teamId: number) => void
+}) {
+  return (
+    <div className="flex flex-1 items-center">
+      {!isFirstRound ? (
+        <div
+          aria-hidden
+          style={{
+            width: CONNECTOR_WIDTH,
+            height: 2,
+            background: 'var(--border-strong)',
+          }}
+        />
+      ) : null}
+
+      <div className="w-56">
+        <KnockoutMatch
+          match={match}
+          highlightedTeamId={highlightedTeamId}
+          onSelectTeam={onSelectTeam}
+        />
+      </div>
+
+      {!isLastRound ? (
+        <div className="flex self-stretch" aria-hidden>
+          <div
+            style={{
+              width: CONNECTOR_WIDTH / 2,
+              height: 2,
+              alignSelf: 'center',
+              background: 'var(--border-strong)',
+            }}
+          />
+          <div
+            style={{
+              width: CONNECTOR_WIDTH / 2,
+              borderColor: 'var(--border-strong)',
+              borderStyle: 'solid',
+              borderWidth:
+                pairPosition === 'top'
+                  ? '2px 2px 0 0'
+                  : '0 2px 2px 0',
+              borderTopRightRadius: pairPosition === 'top' ? 8 : 0,
+              borderBottomRightRadius: pairPosition === 'bottom' ? 8 : 0,
+              marginTop: pairPosition === 'top' ? '50%' : 0,
+              marginBottom: pairPosition === 'bottom' ? '50%' : 0,
+            }}
+          />
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
 export default function BracketView({
   highlightedTeamId,
   onSelectTeam,
@@ -48,34 +117,38 @@ export default function BracketView({
     return <LockedNotice />
   }
 
+  const rounds = bracket.rounds
   const champion =
     bracket.championId !== null ? teamById.get(bracket.championId) : null
 
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-6">
       {champion ? <ChampionBanner champion={champion} /> : null}
 
       <div className="overflow-x-auto pb-4">
-        <div className="flex gap-6" style={{ minWidth: 'max-content' }}>
-          {ROUND_ORDER.map((round: KnockoutRound) => (
-            <section key={round} className="flex w-64 shrink-0 flex-col">
+        <div className="flex" style={{ minWidth: 'max-content' }}>
+          {ROUND_ORDER.map((round: KnockoutRound, roundIndex) => (
+            <div key={round} className="flex flex-col">
               <h3
-                className="mb-3 text-xs font-bold uppercase tracking-[0.2em]"
+                className="mb-3 px-3 text-[11px] font-bold uppercase tracking-[0.18em]"
                 style={{ color: 'var(--text-faint)' }}
               >
                 {ROUND_LABELS[round]}
               </h3>
-              <div className="flex flex-1 flex-col justify-around gap-3">
-                {bracket.rounds![round].map((match) => (
-                  <KnockoutMatch
+              <div className="flex flex-1 flex-col">
+                {rounds[round].map((match, matchIndex) => (
+                  <MatchWrapper
                     key={match.id}
                     match={match}
+                    isFirstRound={roundIndex === 0}
+                    isLastRound={roundIndex === ROUND_ORDER.length - 1}
+                    pairPosition={matchIndex % 2 === 0 ? 'top' : 'bottom'}
                     highlightedTeamId={highlightedTeamId}
                     onSelectTeam={onSelectTeam}
                   />
                 ))}
               </div>
-            </section>
+            </div>
           ))}
         </div>
       </div>
