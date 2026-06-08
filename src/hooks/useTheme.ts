@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 export type Theme = 'dark' | 'light'
 
-const STORAGE_KEY = 'wcp-theme'
+const STORAGE_KEY = 'theme'
 
 function getInitialTheme(): Theme {
   try {
@@ -29,6 +29,6 @@ export function useTheme(): [Theme, () => void] {
     }
   }, [theme])
 
-  const toggle = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
+  const toggle = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))
   return [theme, toggle]
 }

@@ -1,6 +1,6 @@
 import BracketView from '@/components/BracketView'
 import ErrorScreen from '@/components/ErrorScreen'
-import GroupsView from '@/components/GroupsView'
+import { GroupsView } from '@/components/Group/GroupsView'
 import StatsView from '@/components/StatsView'
 import ThemeToggle from '@/components/ThemeToggle'
 import ViewTabs, { type ViewKey } from '@/components/ViewTabs'

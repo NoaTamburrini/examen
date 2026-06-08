@@ -1,6 +1,6 @@
+import type { GroupScores, KoInput, KoInputs, PartialScore } from '@/types'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { GroupScores, KoInput, KoInputs, PartialScore } from '@/types'
 
 interface PredictionState {
   groupScores: GroupScores
@@ -11,7 +11,7 @@ interface PredictionState {
   reset: () => void
 }
 
-const STORAGE_KEY = 'wcp-2026'
+const STORAGE_KEY = 'wcp'
 const STORAGE_VERSION = 1
 
 function isEmptyScore(score?: PartialScore): boolean {
@@ -20,12 +20,12 @@ function isEmptyScore(score?: PartialScore): boolean {
 
 export const usePredictionStore = create<PredictionState>()(
   persist(
-    (set) => ({
+    set => ({
       groupScores: {},
       koInputs: {},
 
       setGroupScore: (matchId, score) =>
-        set((state) => {
+        set(state => {
           const next = { ...state.groupScores }
           if (score === null || (score.home === null && score.away === null)) {
             delete next[matchId]
@@ -36,7 +36,7 @@ export const usePredictionStore = create<PredictionState>()(
         }),
 
       setKoInput: (matchId, input) =>
-        set((state) => {
+        set(state => {
           const next = { ...state.koInputs }
           const empty =
             input === null ||
@@ -51,8 +51,8 @@ export const usePredictionStore = create<PredictionState>()(
           return { koInputs: next }
         }),
 
-      clearKoInputs: (matchIds) =>
-        set((state) => {
+      clearKoInputs: matchIds =>
+        set(state => {
           if (matchIds.length === 0) return state
           const next = { ...state.koInputs }
           let changed = false
@@ -70,7 +70,7 @@ export const usePredictionStore = create<PredictionState>()(
     {
       name: STORAGE_KEY,
       version: STORAGE_VERSION,
-      partialize: (state) => ({
+      partialize: state => ({
         groupScores: state.groupScores,
         koInputs: state.koInputs,
       }),
