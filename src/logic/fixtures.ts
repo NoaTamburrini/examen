@@ -1,5 +1,5 @@
-import type { GroupFixture, GroupId, Team } from '../types'
-import { GROUP_IDS, teamsByGroup } from './loadData'
+import type { GroupFixture, GroupId, Team } from '@/types'
+import { GROUP_IDS, teamsByGroup } from '@/logic/loadData'
 
 const PAIRINGS: ReadonlyArray<readonly [number, number]> = [
   [0, 1],

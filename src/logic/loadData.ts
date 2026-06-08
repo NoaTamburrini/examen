@@ -3,7 +3,7 @@ import type {
   GroupId,
   Team,
   Tournament,
-} from '../types'
+} from '@/types'
 
 export class TournamentDataError extends Error {
   constructor(message: string) {

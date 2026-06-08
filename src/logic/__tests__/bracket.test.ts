@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { KoResults, QualifiedTeam, Team } from '../types'
-import { buildBracket, buildRound32, getChampion } from './bracket'
+import type { KoResults, QualifiedTeam, Team } from '@/types'
+import { buildBracket, buildRound32, getChampion } from '@/logic/bracket'
 
 function fakeTeam(id: number): Team {
   return {

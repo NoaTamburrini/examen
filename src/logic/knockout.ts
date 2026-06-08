@@ -1,4 +1,4 @@
-import type { KoResult, MatchScore } from '../types'
+import type { KoResult, MatchScore } from '@/types'
 
 export interface KoEntry {
   homeId: number

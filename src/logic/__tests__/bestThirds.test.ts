@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { GroupId, Standing, Team } from '../types'
-import { rankThirdPlaces, selectBestThirds, type ThirdPlaceEntry } from './bestThirds'
+import type { GroupId, Standing, Team } from '@/types'
+import { rankThirdPlaces, selectBestThirds, type ThirdPlaceEntry } from '@/logic/bestThirds'
 
 function makeEntry(
   group: GroupId,

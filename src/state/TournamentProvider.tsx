@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
-import type { GroupFixture, GroupId, Team, Tournament } from '../types'
-import { buildAllFixtures } from '../logic/fixtures'
-import { GROUP_IDS, indexTeamsById, teamsByGroup } from '../logic/loadData'
+import type { GroupFixture, GroupId, Team, Tournament } from '@/types'
+import { buildAllFixtures } from '@/logic/fixtures'
+import { GROUP_IDS, indexTeamsById, teamsByGroup } from '@/logic/loadData'
 
 interface TournamentContextValue {
   tournament: Tournament

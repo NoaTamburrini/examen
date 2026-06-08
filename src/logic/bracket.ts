@@ -5,8 +5,8 @@ import type {
   KoResults,
   QualifiedTeam,
   Standing,
-} from '../types'
-import { rankThirdPlaces, selectBestThirds, type ThirdPlaceEntry } from './bestThirds'
+} from '@/types'
+import { rankThirdPlaces, selectBestThirds, type ThirdPlaceEntry } from '@/logic/bestThirds'
 
 export const ROUND_ORDER: KnockoutRound[] = ['R32', 'R16', 'QF', 'SF', 'F']
 

@@ -50,7 +50,12 @@ export interface MatchScore {
   away: number
 }
 
-export type GroupScores = Record<string, MatchScore>
+export interface PartialScore {
+  home: number | null
+  away: number | null
+}
+
+export type GroupScores = Record<string, PartialScore>
 
 export interface Standing {
   team: Team

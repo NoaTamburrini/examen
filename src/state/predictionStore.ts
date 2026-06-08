@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { GroupScores, KoResult, KoResults, MatchScore } from '../types'
+import type { GroupScores, KoResult, KoResults, PartialScore } from '@/types'
 
 interface PredictionState {
   groupScores: GroupScores
   koResults: KoResults
-  setGroupScore: (matchId: string, score: MatchScore | null) => void
+  setGroupScore: (matchId: string, score: PartialScore | null) => void
   setKoResult: (matchId: string, result: KoResult | null) => void
   clearKoResults: (matchIds: string[]) => void
   reset: () => void
@@ -23,7 +23,7 @@ export const usePredictionStore = create<PredictionState>()(
       setGroupScore: (matchId, score) =>
         set((state) => {
           const next = { ...state.groupScores }
-          if (score === null) {
+          if (score === null || (score.home === null && score.away === null)) {
             delete next[matchId]
           } else {
             next[matchId] = score

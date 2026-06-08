@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { resolveKnockout } from './knockout'
+import { resolveKnockout } from '@/logic/knockout'
 
 describe('resolveKnockout', () => {
   it('désigne le vainqueur au temps réglementaire', () => {

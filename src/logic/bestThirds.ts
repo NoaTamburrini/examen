@@ -1,4 +1,4 @@
-import type { GroupId, QualifiedTeam, Standing } from '../types'
+import type { GroupId, QualifiedTeam, Standing } from '@/types'
 
 export interface ThirdPlaceEntry {
   group: GroupId

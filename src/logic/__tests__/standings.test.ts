@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import type { GroupScores, Team } from '../types'
-import { buildGroupFixtures } from './fixtures'
-import { computeGroupStanding, isGroupComplete } from './standings'
+import type { GroupScores, Team } from '@/types'
+import { buildGroupFixtures } from '@/logic/fixtures'
+import { computeGroupStanding, isGroupComplete } from '@/logic/standings'
 
 const teams: Team[] = [
   { id: 1, name: 'Alpha', code: 'a', confederation: 'UEFA', fifaRanking: 5, group: 'A' },

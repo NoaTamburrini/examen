@@ -3,7 +3,7 @@ import type {
   GroupScores,
   Standing,
   Team,
-} from '../types'
+} from '@/types'
 
 interface Tally {
   played: number
@@ -53,7 +53,7 @@ function tallyTeams(
   )
   for (const fixture of fixtures) {
     const score = scores[fixture.id]
-    if (!score) continue
+    if (!score || score.home === null || score.away === null) continue
     if (
       onlyAmong &&
       (!onlyAmong.has(fixture.homeId) || !onlyAmong.has(fixture.awayId))
@@ -143,5 +143,8 @@ export function isGroupComplete(
   fixtures: GroupFixture[],
   scores: GroupScores,
 ): boolean {
-  return fixtures.every((fixture) => Boolean(scores[fixture.id]))
+  return fixtures.every((fixture) => {
+    const score = scores[fixture.id]
+    return Boolean(score) && score.home !== null && score.away !== null
+  })
 }

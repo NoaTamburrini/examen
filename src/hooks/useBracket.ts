@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
-import type { BracketMatch, KnockoutRound, QualifiedTeam } from '../types'
-import { buildBracket, collectQualified, getChampion } from '../logic/bracket'
-import { isGroupComplete } from '../logic/standings'
-import { useTournament } from '../state/TournamentProvider'
-import { usePredictionStore } from '../state/predictionStore'
-import { useStandings } from './useStandings'
+import type { BracketMatch, KnockoutRound, QualifiedTeam } from '@/types'
+import { buildBracket, collectQualified, getChampion } from '@/logic/bracket'
+import { isGroupComplete } from '@/logic/standings'
+import { useTournament } from '@/state/TournamentProvider'
+import { usePredictionStore } from '@/state/predictionStore'
+import { useStandings } from '@/hooks/useStandings'
 
 export interface BracketData {
   locked: boolean

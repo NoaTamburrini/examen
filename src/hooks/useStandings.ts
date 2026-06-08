@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import type { GroupId, Standing } from '../types'
-import { computeGroupStanding } from '../logic/standings'
-import { useTournament } from '../state/TournamentProvider'
-import { usePredictionStore } from '../state/predictionStore'
+import type { GroupId, Standing } from '@/types'
+import { computeGroupStanding } from '@/logic/standings'
+import { useTournament } from '@/state/TournamentProvider'
+import { usePredictionStore } from '@/state/predictionStore'
 
 export function useStandings(): Record<GroupId, Standing[]> {
   const { groupIds, teamsByGroup, fixturesByGroup } = useTournament()
