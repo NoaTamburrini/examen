@@ -3,7 +3,9 @@ import rawData from '@/data/teams-2026.json'
 import { parseTournament, TournamentDataError } from '@/logic/loadData'
 import { TournamentProvider } from '@/state/TournamentProvider'
 import { usePredictionStore } from '@/state/predictionStore'
+import { useTheme } from '@/hooks/useTheme'
 import ErrorScreen from '@/components/ErrorScreen'
+import ThemeToggle from '@/components/ThemeToggle'
 import GroupsView from '@/components/GroupsView'
 import BracketView from '@/components/BracketView'
 import StatsView from '@/components/StatsView'
@@ -25,6 +27,7 @@ export default function App() {
   const [view, setView] = useState<ViewKey>('groups')
   const [highlightedTeamId, setHighlightedTeamId] = useState<number | null>(null)
   const reset = usePredictionStore((state) => state.reset)
+  const [theme, toggleTheme] = useTheme()
 
   if (parsed.error || !parsed.tournament) {
     return <ErrorScreen message={parsed.error ?? 'Données introuvables.'} />
@@ -49,17 +52,20 @@ export default function App() {
               World Cup Predictor
             </h1>
           </div>
-          <button
-            onClick={reset}
-            className="self-start rounded-lg px-3 py-1.5 text-sm font-medium transition md:self-auto"
-            style={{
-              background: 'var(--bg-elevated)',
-              border: '1px solid var(--border)',
-              color: 'var(--text-muted)',
-            }}
-          >
-            Réinitialiser
-          </button>
+          <div className="flex items-center gap-2 self-start md:self-auto">
+            <button
+              onClick={reset}
+              className="rounded-lg px-3 py-1.5 text-sm font-medium transition"
+              style={{
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-muted)',
+              }}
+            >
+              Réinitialiser
+            </button>
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          </div>
         </header>
 
         <div className="mb-6">
