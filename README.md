@@ -18,14 +18,14 @@ npm test           # lance les tests unitaires (Vitest)
 
 ## Stack technique et justification
 
-| Choix | Justification |
-| --- | --- |
-| **React 19 + TypeScript** | Le typage protège le cœur métier (classement, départages, propagation) où une erreur de type coûte cher. Le sujet pénalise d'ailleurs les variables non typées si TypeScript est annoncé. |
-| **Vite** | Build et HMR quasi instantanés, configuration minimale. Aucune surcouche serveur n'est nécessaire : l'application est entièrement côté client. |
-| **Zustand** | Gestion d'état légère avec sélecteurs granulaires. Le store ne contient **que les saisies brutes** ; un changement de score ne re-render que les composants abonnés à cette portion de l'état. Réponse directe à l'anti-pattern « recalcul complet du bracket à chaque clic ». Le middleware `persist` assure la persistance sans code supplémentaire. |
-| **Tailwind v4** | Styles utilitaires + thème via variables CSS, mode clair/sombre verrouillé par page. |
-| **Motion** | Une seule animation motivée : la propagation du vainqueur vers le tour suivant. Respecte `prefers-reduced-motion`. |
-| **Vitest** | Même moteur que Vite, zéro config supplémentaire pour tester la logique métier pure. |
+| Choix                     | Justification                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **React 19 + TypeScript** | Le typage protège le cœur métier (classement, départages, propagation) où une erreur de type coûte cher. Le sujet pénalise d'ailleurs les variables non typées si TypeScript est annoncé.                                                                                                                                                              |
+| **Vite**                  | Build et HMR quasi instantanés, configuration minimale. Aucune surcouche serveur n'est nécessaire : l'application est entièrement côté client.                                                                                                                                                                                                         |
+| **Zustand**               | Gestion d'état légère avec sélecteurs granulaires. Le store ne contient **que les saisies brutes** ; un changement de score ne re-render que les composants abonnés à cette portion de l'état. Réponse directe à l'anti-pattern « recalcul complet du bracket à chaque clic ». Le middleware `persist` assure la persistance sans code supplémentaire. |
+| **Tailwind v4**           | Styles utilitaires + thème via variables CSS, mode clair/sombre verrouillé par page.                                                                                                                                                                                                                                                                   |
+| **Motion**                | Une seule animation motivée : la propagation du vainqueur vers le tour suivant. Respecte `prefers-reduced-motion`.                                                                                                                                                                                                                                     |
+| **Vitest**                | Même moteur que Vite, zéro config supplémentaire pour tester la logique métier pure.                                                                                                                                                                                                                                                                   |
 
 ### Architecture
 
@@ -34,7 +34,7 @@ src/
   data/teams-2026.json        données fournies
   types/                      types du domaine
   logic/                      logique métier PURE, sans React
-    loadData · fixtures · standings · bestThirds · bracket · knockout · stats
+    loadData · matches · standings · bestThirds · bracket · knockout · stats
     __tests__/                tests unitaires Vitest du cœur métier
   state/                      store Zustand (saisies brutes) + contexte tournoi (données statiques)
   hooks/                      sélecteurs dérivés mémoïsés (useStandings, useBracket, useTheme)
