@@ -1,10 +1,10 @@
-import { buildAllFixtures } from '@/logic/fixtures'
+import { buildAllMatches } from '@/logic/matches'
 import { GROUP_IDS, indexTeamsById, teamsByGroup } from '@/logic/loadData'
 import {
   TournamentContext,
   type TournamentContextValue,
 } from '@/state/tournamentContext'
-import type { GroupFixture, GroupId, Tournament } from '@/types'
+import type { GroupMatchup, GroupId, Tournament } from '@/types'
 import { useMemo, type ReactNode } from 'react'
 
 export const TournamentProvider = ({
@@ -15,10 +15,10 @@ export const TournamentProvider = ({
   children: ReactNode
 }) => {
   const value = useMemo<TournamentContextValue>(() => {
-    const fixtures = buildAllFixtures(tournament.teams)
-    const fixturesByGroup = {} as Record<GroupId, GroupFixture[]>
+    const fixtures = buildAllMatches(tournament.teams)
+    const matchesByGroup = {} as Record<GroupId, GroupMatchup[]>
     for (const group of GROUP_IDS) {
-      fixturesByGroup[group] = fixtures.filter(f => f.group === group)
+      matchesByGroup[group] = fixtures.filter(f => f.group === group)
     }
     return {
       tournament,
@@ -26,7 +26,7 @@ export const TournamentProvider = ({
       teamById: indexTeamsById(tournament.teams),
       teamsByGroup: teamsByGroup(tournament.teams),
       fixtures,
-      fixturesByGroup,
+      matchesByGroup,
     }
   }, [tournament])
 

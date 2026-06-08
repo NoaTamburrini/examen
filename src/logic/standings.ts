@@ -1,4 +1,4 @@
-import type { GroupFixture, GroupScores, Standing, Team } from '@/types'
+import type { GroupMatchup, GroupScores, Standing, Team } from '@/types'
 
 interface Tally {
   played: number
@@ -37,7 +37,7 @@ const applyResult = (tally: Tally, scored: number, conceded: number): void => {
 
 const tallyTeams = (
   teamIds: number[],
-  fixtures: GroupFixture[],
+  fixtures: GroupMatchup[],
   scores: GroupScores,
   onlyAmong?: Set<number>,
 ): Map<number, Tally> => {
@@ -72,7 +72,7 @@ const overallCompare = (a: Tally, b: Tally): number => {
 const breakTie = (
   tiedIds: number[],
   teamById: Map<number, Team>,
-  fixtures: GroupFixture[],
+  fixtures: GroupMatchup[],
   scores: GroupScores,
 ): number[] => {
   if (tiedIds.length < 2) return tiedIds
@@ -88,7 +88,7 @@ const breakTie = (
 
 export const computeGroupStanding = (
   teams: Team[],
-  fixtures: GroupFixture[],
+  fixtures: GroupMatchup[],
   scores: GroupScores,
 ): Standing[] => {
   const teamById = new Map(teams.map(team => [team.id, team]))
@@ -135,7 +135,7 @@ export const computeGroupStanding = (
 }
 
 export const isGroupComplete = (
-  fixtures: GroupFixture[],
+  fixtures: GroupMatchup[],
   scores: GroupScores,
 ): boolean =>
   fixtures.every(fixture => {

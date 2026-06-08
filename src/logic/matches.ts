@@ -1,5 +1,5 @@
 import { GROUP_IDS, teamsByGroup } from '@/logic/loadData'
-import type { GroupFixture, GroupId, Team } from '@/types'
+import type { GroupMatchup, GroupId, Team } from '@/types'
 
 const PAIRINGS: ReadonlyArray<readonly [number, number]> = [
   [0, 1],
@@ -10,10 +10,10 @@ const PAIRINGS: ReadonlyArray<readonly [number, number]> = [
   [1, 2],
 ]
 
-export const buildGroupFixtures = (
+export const buildGroupMatches = (
   group: GroupId,
   teams: Team[],
-): GroupFixture[] => {
+): GroupMatchup[] => {
   if (teams.length !== 4) {
     throw new Error(`Le groupe ${group} doit contenir exactement 4 équipes.`)
   }
@@ -25,7 +25,7 @@ export const buildGroupFixtures = (
   }))
 }
 
-export const buildAllFixtures = (teams: Team[]): GroupFixture[] => {
+export const buildAllMatches = (teams: Team[]): GroupMatchup[] => {
   const byGroup = teamsByGroup(teams)
-  return GROUP_IDS.flatMap(group => buildGroupFixtures(group, byGroup[group]))
+  return GROUP_IDS.flatMap(group => buildGroupMatches(group, byGroup[group]))
 }

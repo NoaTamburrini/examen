@@ -1,4 +1,4 @@
-import type { GroupFixture, GroupId, Team, Tournament } from '@/types'
+import type { GroupMatchup, GroupId, Team, Tournament } from '@/types'
 import { createContext, useContext } from 'react'
 
 export interface TournamentContextValue {
@@ -6,8 +6,8 @@ export interface TournamentContextValue {
   groupIds: GroupId[]
   teamById: Map<number, Team>
   teamsByGroup: Record<GroupId, Team[]>
-  fixtures: GroupFixture[]
-  fixturesByGroup: Record<GroupId, GroupFixture[]>
+  fixtures: GroupMatchup[]
+  matchesByGroup: Record<GroupId, GroupMatchup[]>
 }
 
 export const TournamentContext = createContext<TournamentContextValue | null>(

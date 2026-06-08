@@ -14,7 +14,7 @@ export interface BracketData {
 }
 
 export const useBracket = (): BracketData => {
-  const { groupIds, fixturesByGroup, tournament } = useTournament()
+  const { groupIds, matchesByGroup, tournament } = useTournament()
   const standings = useStandings()
   const groupScores = usePredictionStore(state => state.groupScores)
   const koInputs = usePredictionStore(state => state.koInputs)
@@ -22,9 +22,9 @@ export const useBracket = (): BracketData => {
   const allComplete = useMemo(
     () =>
       groupIds.every(group =>
-        isGroupComplete(fixturesByGroup[group], groupScores),
+        isGroupComplete(matchesByGroup[group], groupScores),
       ),
-    [groupIds, fixturesByGroup, groupScores],
+    [groupIds, matchesByGroup, groupScores],
   )
 
   return useMemo(() => {

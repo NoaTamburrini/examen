@@ -1,14 +1,14 @@
 import MatchCard from '@/components/MatchCard'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useTournament } from '@/state/tournamentContext'
-import type { GroupFixture } from '@/types'
+import type { GroupMatchup } from '@/types'
 
 export const GroupMatch = ({
   fixture,
   onSelectTeam,
   highlightedTeamId,
 }: {
-  fixture: GroupFixture
+  fixture: GroupMatchup
   onSelectTeam: (teamId: number) => void
   highlightedTeamId: number | null
 }) => {

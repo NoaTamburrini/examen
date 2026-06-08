@@ -57,7 +57,7 @@ export interface Tournament {
   teams: Team[]
 }
 
-export interface GroupFixture {
+export interface GroupMatchup {
   id: string
   group: GroupId
   homeId: number

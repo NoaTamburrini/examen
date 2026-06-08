@@ -15,10 +15,10 @@ export const GroupCard = ({
   highlightedTeamId: number | null
   onSelectTeam: (teamId: number) => void
 }) => {
-  const { fixturesByGroup } = useTournament()
+  const { matchesByGroup } = useTournament()
   const standings = useStandings()
   const groupScores = usePredictionStore(state => state.groupScores)
-  const fixtures = fixturesByGroup[group]
+  const fixtures = matchesByGroup[group]
   const complete = isGroupComplete(fixtures, groupScores)
 
   return (

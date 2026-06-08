@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { GroupScores, Team } from '@/types'
-import { buildGroupFixtures } from '@/logic/fixtures'
+import { buildGroupMatches } from '@/logic/matches'
 import { computeGroupStanding, isGroupComplete } from '@/logic/standings'
 
 const teams: Team[] = [
@@ -10,7 +10,7 @@ const teams: Team[] = [
   { id: 4, name: 'Delta', code: 'd', confederation: 'UEFA', fifaRanking: 20, group: 'A' },
 ]
 
-const fixtures = buildGroupFixtures('A', teams)
+const fixtures = buildGroupMatches('A', teams)
 
 const scoreFor = (homeId: number, awayId: number): string => {
   const fixture = fixtures.find(

@@ -5,7 +5,7 @@ import type { GroupId, Standing } from '@/types'
 import { useMemo } from 'react'
 
 export const useStandings = (): Record<GroupId, Standing[]> => {
-  const { groupIds, teamsByGroup, fixturesByGroup } = useTournament()
+  const { groupIds, teamsByGroup, matchesByGroup } = useTournament()
   const groupScores = usePredictionStore(state => state.groupScores)
 
   return useMemo(() => {
@@ -13,10 +13,10 @@ export const useStandings = (): Record<GroupId, Standing[]> => {
     for (const group of groupIds) {
       result[group] = computeGroupStanding(
         teamsByGroup[group],
-        fixturesByGroup[group],
+        matchesByGroup[group],
         groupScores,
       )
     }
     return result
-  }, [groupIds, teamsByGroup, fixturesByGroup, groupScores])
+  }, [groupIds, teamsByGroup, matchesByGroup, groupScores])
 }

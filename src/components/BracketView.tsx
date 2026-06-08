@@ -18,11 +18,11 @@ const CARD_WIDTH = 224
 const CONNECTOR = 26
 
 const LockedNotice = () => {
-  const { groupIds, fixturesByGroup } = useTournament()
+  const { groupIds, matchesByGroup } = useTournament()
   const groupScores = usePredictionStore(state => state.groupScores)
   useStandings()
   const done = groupIds.filter(group =>
-    isGroupComplete(fixturesByGroup[group], groupScores),
+    isGroupComplete(matchesByGroup[group], groupScores),
   ).length
 
   return (
