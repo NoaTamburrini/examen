@@ -19,7 +19,7 @@ export default function ErrorScreen({ message }: ErrorScreenProps) {
         >
           !
         </div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+        <h1 className="font-display text-2xl font-bold">
           Données indisponibles
         </h1>
         <p className="mt-3 text-sm" style={{ color: 'var(--text-muted)' }}>

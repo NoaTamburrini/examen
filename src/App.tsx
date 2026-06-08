@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
-import rawData from './data/teams-2026.json'
-import { parseTournament, TournamentDataError } from './logic/loadData'
-import { TournamentProvider } from './state/TournamentProvider'
-import ErrorScreen from './components/ErrorScreen'
+import { useMemo, useState } from 'react'
+import rawData from '@/data/teams-2026.json'
+import { parseTournament, TournamentDataError } from '@/logic/loadData'
+import { TournamentProvider } from '@/state/TournamentProvider'
+import ErrorScreen from '@/components/ErrorScreen'
+import GroupsView from '@/components/GroupsView'
 
 export default function App() {
   const parsed = useMemo(() => {
@@ -17,24 +18,35 @@ export default function App() {
     }
   }, [])
 
+  const [highlightedTeamId, setHighlightedTeamId] = useState<number | null>(null)
+
   if (parsed.error || !parsed.tournament) {
     return <ErrorScreen message={parsed.error ?? 'Données introuvables.'} />
   }
 
+  function toggleHighlight(teamId: number) {
+    setHighlightedTeamId((current) => (current === teamId ? null : teamId))
+  }
+
   return (
     <TournamentProvider tournament={parsed.tournament}>
-      <div className="min-h-[100dvh] grid place-items-center px-4">
-        <div className="text-center">
+      <div className="mx-auto max-w-[1400px] px-4 py-6 md:px-6 md:py-8">
+        <header className="mb-8">
           <p
-            className="text-sm uppercase tracking-[0.3em]"
+            className="text-xs uppercase tracking-[0.3em]"
             style={{ color: 'var(--accent)' }}
           >
             {parsed.tournament.tournament}
           </p>
-          <h1 className="font-[family-name:var(--font-display)] text-5xl font-bold mt-3">
+          <h1 className="font-display text-3xl font-bold md:text-4xl">
             World Cup Predictor
           </h1>
-        </div>
+        </header>
+
+        <GroupsView
+          highlightedTeamId={highlightedTeamId}
+          onSelectTeam={toggleHighlight}
+        />
       </div>
     </TournamentProvider>
   )
