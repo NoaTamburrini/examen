@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import type { Team } from '@/types'
 import Flag from '@/components/Flag'
 import ScoreInput from '@/components/ScoreInput'
@@ -33,6 +34,8 @@ export default function MatchCard({
   disabled,
   footer,
 }: MatchCardProps) {
+  const reduceMotion = useReducedMotion()
+
   function renderRow(slot: TeamSlot) {
     const winner = isWinner(slot, winnerId)
     const highlighted =
@@ -57,27 +60,38 @@ export default function MatchCard({
           onClick={() => slot.team && onSelectTeam?.(slot.team.id)}
           className="flex min-w-0 flex-1 items-center gap-2.5 text-left disabled:cursor-default"
         >
-          {slot.team ? (
-            <>
-              <Flag code={slot.team.code} name={slot.team.name} size={22} />
-              <span
-                className="truncate text-sm"
-                style={{
-                  color: winner ? 'var(--text)' : 'var(--text-muted)',
-                  fontWeight: winner ? 700 : 500,
-                }}
-              >
-                {slot.team.name}
-              </span>
-            </>
-          ) : (
-            <span
-              className="truncate text-sm italic"
-              style={{ color: 'var(--text-faint)' }}
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.span
+              key={slot.team?.id ?? 'tbd'}
+              initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduceMotion ? undefined : { opacity: 0, x: 8 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 26 }}
+              className="flex min-w-0 flex-1 items-center gap-2.5"
             >
-              {slot.placeholder ?? 'À déterminer'}
-            </span>
-          )}
+              {slot.team ? (
+                <>
+                  <Flag code={slot.team.code} name={slot.team.name} size={22} />
+                  <span
+                    className="truncate text-sm"
+                    style={{
+                      color: winner ? 'var(--text)' : 'var(--text-muted)',
+                      fontWeight: winner ? 700 : 500,
+                    }}
+                  >
+                    {slot.team.name}
+                  </span>
+                </>
+              ) : (
+                <span
+                  className="truncate text-sm italic"
+                  style={{ color: 'var(--text-faint)' }}
+                >
+                  {slot.placeholder ?? 'À déterminer'}
+                </span>
+              )}
+            </motion.span>
+          </AnimatePresence>
         </button>
         <ScoreInput
           value={slot.score}
@@ -89,12 +103,16 @@ export default function MatchCard({
     )
   }
 
+  const containsHighlighted =
+    highlightedTeamId != null &&
+    (home.team?.id === highlightedTeamId || away.team?.id === highlightedTeamId)
+
   return (
     <div
-      className="overflow-hidden rounded-xl border"
+      className="overflow-hidden rounded-xl border transition"
       style={{
         background: 'var(--bg-elevated)',
-        borderColor: 'var(--border)',
+        borderColor: containsHighlighted ? 'var(--accent)' : 'var(--border)',
       }}
     >
       {renderRow(home)}
