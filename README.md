@@ -33,8 +33,9 @@ npm test           # lance les tests unitaires (Vitest)
 src/
   data/teams-2026.json        données fournies
   types/                      types du domaine
-  logic/                      logique métier PURE, sans React, testée
+  logic/                      logique métier PURE, sans React
     loadData · fixtures · standings · bestThirds · bracket · knockout · stats
+    __tests__/                tests unitaires Vitest du cœur métier
   state/                      store Zustand (saisies brutes) + contexte tournoi (données statiques)
   hooks/                      sélecteurs dérivés mémoïsés (useStandings, useBracket, useTheme)
   components/                 UI (MatchCard réutilisable poule ET phase finale)

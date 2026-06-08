@@ -1,5 +1,5 @@
-import type { Standing } from '@/types'
 import Flag from '@/components/Flag'
+import type { Standing } from '@/types'
 
 interface GroupTableProps {
   standings: Standing[]
@@ -32,7 +32,7 @@ export default function GroupTable({
         </tr>
       </thead>
       <tbody>
-        {standings.map((row) => {
+        {standings.map(row => {
           const highlighted = highlightedTeamId === row.team.id
           return (
             <tr
@@ -42,16 +42,14 @@ export default function GroupTable({
               style={{
                 background: highlighted ? 'var(--accent-soft)' : 'transparent',
                 borderTop: '1px solid var(--border)',
-              }}
-            >
+              }}>
               <td className="py-1.5 pl-1.5" style={{ width: 24 }}>
                 <span
                   className="tabular inline-grid h-4 w-4 place-items-center rounded text-[10px] font-bold"
                   style={{
                     color: 'var(--accent-contrast)',
                     background: qualificationColor(row.rank),
-                  }}
-                >
+                  }}>
                   {row.rank}
                 </span>
               </td>
@@ -63,19 +61,26 @@ export default function GroupTable({
                   </span>
                 </div>
               </td>
-              <td className="tabular px-1 text-center" style={{ color: 'var(--text-muted)' }}>
+              <td
+                className="tabular px-1 text-center"
+                style={{ color: 'var(--text-muted)' }}>
                 {row.played}
               </td>
-              <td className="tabular px-1 text-center" style={{ color: 'var(--text-muted)' }}>
-                {row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
+              <td
+                className="tabular px-1 text-center"
+                style={{ color: 'var(--text-muted)' }}>
+                {row.goalDifference > 0
+                  ? `+${row.goalDifference}`
+                  : row.goalDifference}
               </td>
-              <td className="tabular px-1 text-center" style={{ color: 'var(--text-muted)' }}>
+              <td
+                className="tabular px-1 text-center"
+                style={{ color: 'var(--text-muted)' }}>
                 {row.goalsFor}
               </td>
               <td
                 className="tabular px-1.5 text-right font-bold"
-                style={{ color: 'var(--text)' }}
-              >
+                style={{ color: 'var(--text)' }}>
                 {row.points}
               </td>
             </tr>

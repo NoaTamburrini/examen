@@ -1,9 +1,4 @@
-import type {
-  GroupFixture,
-  GroupScores,
-  Standing,
-  Team,
-} from '@/types'
+import type { GroupFixture, GroupScores, Standing, Team } from '@/types'
 
 interface Tally {
   played: number
@@ -48,9 +43,8 @@ function tallyTeams(
   scores: GroupScores,
   onlyAmong?: Set<number>,
 ): Map<number, Tally> {
-  const tallies = new Map<number, Tally>(
-    teamIds.map((id) => [id, emptyTally()]),
-  )
+  const tallies = new Map<number, Tally>(teamIds.map(id => [id, emptyTally()]))
+
   for (const fixture of fixtures) {
     const score = scores[fixture.id]
     if (!score || score.home === null || score.away === null) continue
@@ -99,8 +93,8 @@ export function computeGroupStanding(
   fixtures: GroupFixture[],
   scores: GroupScores,
 ): Standing[] {
-  const teamById = new Map(teams.map((team) => [team.id, team]))
-  const teamIds = teams.map((team) => team.id)
+  const teamById = new Map(teams.map(team => [team.id, team]))
+  const teamIds = teams.map(team => team.id)
   const tallies = tallyTeams(teamIds, fixtures, scores)
 
   const ordered = [...teamIds].sort((idA, idB) =>
@@ -113,7 +107,10 @@ export function computeGroupStanding(
     let end = cursor + 1
     while (
       end < ordered.length &&
-      overallCompare(tallies.get(ordered[cursor])!, tallies.get(ordered[end])!) === 0
+      overallCompare(
+        tallies.get(ordered[cursor])!,
+        tallies.get(ordered[end])!,
+      ) === 0
     ) {
       end += 1
     }
@@ -143,7 +140,7 @@ export function isGroupComplete(
   fixtures: GroupFixture[],
   scores: GroupScores,
 ): boolean {
-  return fixtures.every((fixture) => {
+  return fixtures.every(fixture => {
     const score = scores[fixture.id]
     return Boolean(score) && score.home !== null && score.away !== null
   })
