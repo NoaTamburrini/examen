@@ -10,16 +10,16 @@ const teams: Team[] = [
   { id: 4, name: 'Delta', code: 'd', confederation: 'UEFA', fifaRanking: 20, group: 'A' },
 ]
 
-const fixtures = buildGroupMatches('A', teams)
+const matches = buildGroupMatches('A', teams)
 
 const scoreFor = (homeId: number, awayId: number): string => {
-  const fixture = fixtures.find(
+  const match = matches.find(
     f =>
       (f.homeId === homeId && f.awayId === awayId) ||
       (f.homeId === awayId && f.awayId === homeId),
   )
-  if (!fixture) throw new Error(`Aucun match entre ${homeId} et ${awayId}`)
-  return fixture.id
+  if (!match) throw new Error(`Aucun match entre ${homeId} et ${awayId}`)
+  return match.id
 }
 
 const scores = (
@@ -27,9 +27,9 @@ const scores = (
 ): GroupScores => {
   const out: GroupScores = {}
   for (const [home, away, hg, ag] of results) {
-    const fixture = fixtures.find(f => f.homeId === home && f.awayId === away)
-    if (!fixture) throw new Error(`Pas de match ${home} (dom) vs ${away} (ext)`)
-    out[fixture.id] = { home: hg, away: ag }
+    const match = matches.find(f => f.homeId === home && f.awayId === away)
+    if (!match) throw new Error(`Pas de match ${home} (dom) vs ${away} (ext)`)
+    out[match.id] = { home: hg, away: ag }
   }
   return out
 }
@@ -42,7 +42,7 @@ describe('computeGroupStanding', () => {
   it('classe par points en premier', () => {
     const standing = computeGroupStanding(
       teams,
-      fixtures,
+      matches,
       scores([
         [1, 2, 2, 0],
         [3, 4, 1, 0],
@@ -59,7 +59,7 @@ describe('computeGroupStanding', () => {
   it('départage par différence de buts à points égaux', () => {
     const standing = computeGroupStanding(
       teams,
-      fixtures,
+      matches,
       scores([
         [1, 2, 5, 0],
         [3, 4, 1, 0],
@@ -77,7 +77,7 @@ describe('computeGroupStanding', () => {
   it('départage par buts marqués quand points et différence sont égaux', () => {
     const standing = computeGroupStanding(
       teams,
-      fixtures,
+      matches,
       scores([
         [1, 2, 3, 1],
         [3, 4, 0, 0],
@@ -100,7 +100,7 @@ describe('computeGroupStanding', () => {
       [4, 1, 0, 2],
       [2, 3, 2, 0],
     ])
-    const standing = computeGroupStanding(teams, fixtures, s)
+    const standing = computeGroupStanding(teams, matches, s)
     const idx1 = standing.findIndex((r) => r.team.id === 1)
     const idx2 = standing.findIndex((r) => r.team.id === 2)
     expect(standing[idx1].points).toBe(standing[idx2].points)
@@ -119,17 +119,17 @@ describe('computeGroupStanding', () => {
       [4, 1, 1, 1],
       [2, 3, 1, 1],
     ])
-    const standing = computeGroupStanding(teams, fixtures, allDraws)
+    const standing = computeGroupStanding(teams, matches, allDraws)
     expect(order(standing)).toEqual([1, 2, 3, 4])
     expect(standing.every((r) => r.points === 3)).toBe(true)
   })
 
   it('calcule un classement partiel sans planter', () => {
     const partial = scores([[1, 2, 1, 0]])
-    const standing = computeGroupStanding(teams, fixtures, partial)
+    const standing = computeGroupStanding(teams, matches, partial)
     expect(standing[0].team.id).toBe(1)
     expect(standing[0].played).toBe(1)
-    expect(isGroupComplete(fixtures, partial)).toBe(false)
+    expect(isGroupComplete(matches, partial)).toBe(false)
   })
 
   it('détecte un groupe complet', () => {
@@ -141,6 +141,6 @@ describe('computeGroupStanding', () => {
       [4, 1, 1, 0],
       [2, 3, 1, 0],
     ])
-    expect(isGroupComplete(fixtures, full)).toBe(true)
+    expect(isGroupComplete(matches, full)).toBe(true)
   })
 })

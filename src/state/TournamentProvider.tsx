@@ -15,17 +15,17 @@ export const TournamentProvider = ({
   children: ReactNode
 }) => {
   const value = useMemo<TournamentContextValue>(() => {
-    const fixtures = buildAllMatches(tournament.teams)
+    const matches = buildAllMatches(tournament.teams)
     const matchesByGroup = {} as Record<GroupId, GroupMatchup[]>
     for (const group of GROUP_IDS) {
-      matchesByGroup[group] = fixtures.filter(f => f.group === group)
+      matchesByGroup[group] = matches.filter(f => f.group === group)
     }
     return {
       tournament,
       groupIds: GROUP_IDS,
       teamById: indexTeamsById(tournament.teams),
       teamsByGroup: teamsByGroup(tournament.teams),
-      fixtures,
+      matches,
       matchesByGroup,
     }
   }, [tournament])

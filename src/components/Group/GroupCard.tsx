@@ -18,8 +18,8 @@ export const GroupCard = ({
   const { matchesByGroup } = useTournament()
   const standings = useStandings()
   const groupScores = usePredictionStore(state => state.groupScores)
-  const fixtures = matchesByGroup[group]
-  const complete = isGroupComplete(fixtures, groupScores)
+  const matches = matchesByGroup[group]
+  const complete = isGroupComplete(matches, groupScores)
 
   return (
     <section
@@ -50,10 +50,10 @@ export const GroupCard = ({
       />
 
       <div className="mt-3 grid gap-1.5">
-        {fixtures.map(fixture => (
+        {matches.map(match => (
           <GroupMatch
-            key={fixture.id}
-            fixture={fixture}
+            key={match.id}
+            match={match}
             onSelectTeam={onSelectTeam}
             highlightedTeamId={highlightedTeamId}
           />

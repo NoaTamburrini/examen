@@ -4,24 +4,24 @@ import { useTournament } from '@/state/tournamentContext'
 import type { GroupMatchup } from '@/types'
 
 export const GroupMatch = ({
-  fixture,
+  match,
   onSelectTeam,
   highlightedTeamId,
 }: {
-  fixture: GroupMatchup
+  match: GroupMatchup
   onSelectTeam: (teamId: number) => void
   highlightedTeamId: number | null
 }) => {
   const { teamById } = useTournament()
-  const score = usePredictionStore(state => state.groupScores[fixture.id])
+  const score = usePredictionStore(state => state.groupScores[match.id])
   const setGroupScore = usePredictionStore(state => state.setGroupScore)
 
-  const home = teamById.get(fixture.homeId)!
-  const away = teamById.get(fixture.awayId)!
+  const home = teamById.get(match.homeId)!
+  const away = teamById.get(match.awayId)!
 
   const update = (side: 'home' | 'away', value: number | null) => {
     const current = score ?? { home: null, away: null }
-    setGroupScore(fixture.id, { ...current, [side]: value })
+    setGroupScore(match.id, { ...current, [side]: value })
   }
 
   return (

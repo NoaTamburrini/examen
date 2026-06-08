@@ -6,7 +6,7 @@ export interface TournamentContextValue {
   groupIds: GroupId[]
   teamById: Map<number, Team>
   teamsByGroup: Record<GroupId, Team[]>
-  fixtures: GroupMatchup[]
+  matches: GroupMatchup[]
   matchesByGroup: Record<GroupId, GroupMatchup[]>
 }
 

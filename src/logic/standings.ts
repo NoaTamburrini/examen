@@ -37,23 +37,23 @@ const applyResult = (tally: Tally, scored: number, conceded: number): void => {
 
 const tallyTeams = (
   teamIds: number[],
-  fixtures: GroupMatchup[],
+  matches: GroupMatchup[],
   scores: GroupScores,
   onlyAmong?: Set<number>,
 ): Map<number, Tally> => {
   const tallies = new Map<number, Tally>(teamIds.map(id => [id, emptyTally()]))
 
-  for (const fixture of fixtures) {
-    const score = scores[fixture.id]
+  for (const match of matches) {
+    const score = scores[match.id]
     if (!score || score.home === null || score.away === null) continue
     if (
       onlyAmong &&
-      (!onlyAmong.has(fixture.homeId) || !onlyAmong.has(fixture.awayId))
+      (!onlyAmong.has(match.homeId) || !onlyAmong.has(match.awayId))
     ) {
       continue
     }
-    const home = tallies.get(fixture.homeId)
-    const away = tallies.get(fixture.awayId)
+    const home = tallies.get(match.homeId)
+    const away = tallies.get(match.awayId)
     if (!home || !away) continue
     applyResult(home, score.home, score.away)
     applyResult(away, score.away, score.home)
@@ -72,12 +72,12 @@ const overallCompare = (a: Tally, b: Tally): number => {
 const breakTie = (
   tiedIds: number[],
   teamById: Map<number, Team>,
-  fixtures: GroupMatchup[],
+  matches: GroupMatchup[],
   scores: GroupScores,
 ): number[] => {
   if (tiedIds.length < 2) return tiedIds
 
-  const headToHead = tallyTeams(tiedIds, fixtures, scores, new Set(tiedIds))
+  const headToHead = tallyTeams(tiedIds, matches, scores, new Set(tiedIds))
 
   return [...tiedIds].sort((idA, idB) => {
     const h2h = overallCompare(headToHead.get(idA)!, headToHead.get(idB)!)
@@ -88,12 +88,12 @@ const breakTie = (
 
 export const computeGroupStanding = (
   teams: Team[],
-  fixtures: GroupMatchup[],
+  matches: GroupMatchup[],
   scores: GroupScores,
 ): Standing[] => {
   const teamById = new Map(teams.map(team => [team.id, team]))
   const teamIds = teams.map(team => team.id)
-  const tallies = tallyTeams(teamIds, fixtures, scores)
+  const tallies = tallyTeams(teamIds, matches, scores)
 
   const ordered = [...teamIds].sort((idA, idB) =>
     overallCompare(tallies.get(idA)!, tallies.get(idB)!),
@@ -113,7 +113,7 @@ export const computeGroupStanding = (
       end += 1
     }
     const block = ordered.slice(cursor, end)
-    resolved.push(...breakTie(block, teamById, fixtures, scores))
+    resolved.push(...breakTie(block, teamById, matches, scores))
     cursor = end
   }
 
@@ -135,10 +135,10 @@ export const computeGroupStanding = (
 }
 
 export const isGroupComplete = (
-  fixtures: GroupMatchup[],
+  matches: GroupMatchup[],
   scores: GroupScores,
 ): boolean =>
-  fixtures.every(fixture => {
-    const score = scores[fixture.id]
+  matches.every(match => {
+    const score = scores[match.id]
     return Boolean(score) && score.home !== null && score.away !== null
   })
