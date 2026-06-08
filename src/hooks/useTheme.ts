@@ -21,12 +21,18 @@ export const useTheme = (): [Theme, () => void] => {
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
+    const root = document.documentElement
+    root.classList.add('theme-instant')
+    root.setAttribute('data-theme', theme)
     try {
       localStorage.setItem(STORAGE_KEY, theme)
     } catch {
       void 0
     }
+    const frame = requestAnimationFrame(() => {
+      root.classList.remove('theme-instant')
+    })
+    return () => cancelAnimationFrame(frame)
   }, [theme])
 
   const toggle = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))
