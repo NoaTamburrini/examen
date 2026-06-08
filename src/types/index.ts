@@ -80,6 +80,14 @@ export interface QualifiedTeam {
 
 export type KnockoutRound = 'R32' | 'R16' | 'QF' | 'SF' | 'F'
 
+export interface KoInput {
+  score?: PartialScore
+  extraTime?: PartialScore
+  penalties?: PartialScore
+}
+
+export type KoInputs = Record<string, KoInput>
+
 export interface KoResult {
   score?: MatchScore
   extraTime?: MatchScore

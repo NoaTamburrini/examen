@@ -17,7 +17,7 @@ export function useBracket(): BracketData {
   const { groupIds, fixturesByGroup, tournament } = useTournament()
   const standings = useStandings()
   const groupScores = usePredictionStore((state) => state.groupScores)
-  const koResults = usePredictionStore((state) => state.koResults)
+  const koInputs = usePredictionStore((state) => state.koInputs)
 
   const allComplete = useMemo(
     () =>
@@ -35,12 +35,12 @@ export function useBracket(): BracketData {
       standings,
       tournament.format.bestThirdPlaces,
     )
-    const rounds = buildBracket(qualified, koResults)
+    const rounds = buildBracket(qualified, koInputs)
     return {
       locked: false,
       qualified,
       rounds,
       championId: getChampion(rounds),
     }
-  }, [allComplete, standings, koResults, tournament.format.bestThirdPlaces])
+  }, [allComplete, standings, koInputs, tournament.format.bestThirdPlaces])
 }

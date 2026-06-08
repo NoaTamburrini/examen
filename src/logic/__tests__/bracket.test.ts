@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { KoResults, QualifiedTeam, Team } from '@/types'
+import type { KoInputs, QualifiedTeam, Team } from '@/types'
 import { buildBracket, buildRound32, getChampion } from '@/logic/bracket'
 
 function fakeTeam(id: number): Team {
@@ -40,21 +40,21 @@ describe('buildBracket propagation', () => {
     expect(getChampion(bracket)).toBeNull()
   })
 
-  it('propage les vainqueurs jusqu’à la finale', () => {
-    const results: KoResults = {}
+  it('propage les vainqueurs jusqu’à la finale (équipe à domicile gagne)', () => {
+    const inputs: KoInputs = {}
     const r32 = buildRound32(qualified)
     for (const match of r32) {
-      results[match.id] = { winnerId: match.homeId!, score: { home: 1, away: 0 } }
+      inputs[match.id] = { score: { home: 1, away: 0 } }
     }
 
-    let bracket = buildBracket(qualified, results)
+    let bracket = buildBracket(qualified, inputs)
     for (const round of ['R16', 'QF', 'SF', 'F'] as const) {
       for (const match of bracket[round]) {
         if (match.homeId !== null) {
-          results[match.id] = { winnerId: match.homeId, score: { home: 1, away: 0 } }
+          inputs[match.id] = { score: { home: 1, away: 0 } }
         }
       }
-      bracket = buildBracket(qualified, results)
+      bracket = buildBracket(qualified, inputs)
     }
 
     expect(bracket.R16[0].homeId).toBe(1)
@@ -62,9 +62,22 @@ describe('buildBracket propagation', () => {
     expect(getChampion(bracket)).toBe(1)
   })
 
-  it('ignore un résultat dont le vainqueur n’est pas dans le match', () => {
-    const results: KoResults = { 'R32-1': { winnerId: 999, score: { home: 1, away: 0 } } }
-    const bracket = buildBracket(qualified, results)
+  it('tranche un match nul aux tirs au but', () => {
+    const inputs: KoInputs = {
+      'R32-1': {
+        score: { home: 1, away: 1 },
+        extraTime: { home: 0, away: 0 },
+        penalties: { home: 5, away: 4 },
+      },
+    }
+    const bracket = buildBracket(qualified, inputs)
+    expect(bracket.R32[0].winnerId).toBe(1)
+    expect(bracket.R16[0].homeId).toBe(1)
+  })
+
+  it('ne propage pas un nul sans prolongation saisie', () => {
+    const inputs: KoInputs = { 'R32-1': { score: { home: 1, away: 1 } } }
+    const bracket = buildBracket(qualified, inputs)
     expect(bracket.R32[0].winnerId).toBeNull()
     expect(bracket.R16[0].homeId).toBeNull()
   })

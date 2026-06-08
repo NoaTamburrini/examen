@@ -1,4 +1,4 @@
-import type { KoResult, MatchScore } from '@/types'
+import type { KoInput, KoResult, MatchScore, PartialScore } from '@/types'
 
 export interface KoEntry {
   homeId: number
@@ -6,6 +6,25 @@ export interface KoEntry {
   score?: MatchScore
   extraTime?: MatchScore
   penalties?: MatchScore
+}
+
+function complete(score?: PartialScore): MatchScore | undefined {
+  if (!score || score.home === null || score.away === null) return undefined
+  return { home: score.home, away: score.away }
+}
+
+export function toKoEntry(
+  homeId: number,
+  awayId: number,
+  input: KoInput,
+): KoEntry {
+  return {
+    homeId,
+    awayId,
+    score: complete(input.score),
+    extraTime: complete(input.extraTime),
+    penalties: complete(input.penalties),
+  }
 }
 
 export interface KoOutcome {

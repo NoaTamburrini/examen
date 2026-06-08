@@ -1,24 +1,28 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { GroupScores, KoResult, KoResults, PartialScore } from '@/types'
+import type { GroupScores, KoInput, KoInputs, PartialScore } from '@/types'
 
 interface PredictionState {
   groupScores: GroupScores
-  koResults: KoResults
+  koInputs: KoInputs
   setGroupScore: (matchId: string, score: PartialScore | null) => void
-  setKoResult: (matchId: string, result: KoResult | null) => void
-  clearKoResults: (matchIds: string[]) => void
+  setKoInput: (matchId: string, input: KoInput | null) => void
+  clearKoInputs: (matchIds: string[]) => void
   reset: () => void
 }
 
 const STORAGE_KEY = 'wcp-2026'
 const STORAGE_VERSION = 1
 
+function isEmptyScore(score?: PartialScore): boolean {
+  return !score || (score.home === null && score.away === null)
+}
+
 export const usePredictionStore = create<PredictionState>()(
   persist(
     (set) => ({
       groupScores: {},
-      koResults: {},
+      koInputs: {},
 
       setGroupScore: (matchId, score) =>
         set((state) => {
@@ -31,21 +35,26 @@ export const usePredictionStore = create<PredictionState>()(
           return { groupScores: next }
         }),
 
-      setKoResult: (matchId, result) =>
+      setKoInput: (matchId, input) =>
         set((state) => {
-          const next = { ...state.koResults }
-          if (result === null) {
+          const next = { ...state.koInputs }
+          const empty =
+            input === null ||
+            (isEmptyScore(input.score) &&
+              isEmptyScore(input.extraTime) &&
+              isEmptyScore(input.penalties))
+          if (empty) {
             delete next[matchId]
           } else {
-            next[matchId] = result
+            next[matchId] = input
           }
-          return { koResults: next }
+          return { koInputs: next }
         }),
 
-      clearKoResults: (matchIds) =>
+      clearKoInputs: (matchIds) =>
         set((state) => {
           if (matchIds.length === 0) return state
-          const next = { ...state.koResults }
+          const next = { ...state.koInputs }
           let changed = false
           for (const id of matchIds) {
             if (id in next) {
@@ -53,17 +62,17 @@ export const usePredictionStore = create<PredictionState>()(
               changed = true
             }
           }
-          return changed ? { koResults: next } : state
+          return changed ? { koInputs: next } : state
         }),
 
-      reset: () => set({ groupScores: {}, koResults: {} }),
+      reset: () => set({ groupScores: {}, koInputs: {} }),
     }),
     {
       name: STORAGE_KEY,
       version: STORAGE_VERSION,
       partialize: (state) => ({
         groupScores: state.groupScores,
-        koResults: state.koResults,
+        koInputs: state.koInputs,
       }),
     },
   ),

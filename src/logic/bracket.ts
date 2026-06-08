@@ -2,11 +2,12 @@ import type {
   BracketMatch,
   GroupId,
   KnockoutRound,
-  KoResults,
+  KoInputs,
   QualifiedTeam,
   Standing,
 } from '@/types'
 import { rankThirdPlaces, selectBestThirds, type ThirdPlaceEntry } from '@/logic/bestThirds'
+import { buildKoResult, toKoEntry } from '@/logic/knockout'
 
 export const ROUND_ORDER: KnockoutRound[] = ['R32', 'R16', 'QF', 'SF', 'F']
 
@@ -124,7 +125,7 @@ function emptyRound(round: KnockoutRound): BracketMatch[] {
 
 export function buildBracket(
   qualified: QualifiedTeam[],
-  results: KoResults,
+  inputs: KoInputs,
 ): Record<KnockoutRound, BracketMatch[]> {
   const bracket = {
     R32: buildRound32(qualified),
@@ -136,15 +137,15 @@ export function buildBracket(
 
   for (const round of ROUND_ORDER) {
     for (const match of bracket[round]) {
-      const stored = results[match.id]
-      if (
-        stored &&
-        match.homeId !== null &&
-        match.awayId !== null &&
-        (stored.winnerId === match.homeId || stored.winnerId === match.awayId)
-      ) {
-        match.result = stored
-        match.winnerId = stored.winnerId
+      const input = inputs[match.id]
+      if (input && match.homeId !== null && match.awayId !== null) {
+        const result = buildKoResult(
+          toKoEntry(match.homeId, match.awayId, input),
+        )
+        if (result) {
+          match.result = result
+          match.winnerId = result.winnerId
+        }
       }
     }
 

@@ -2,8 +2,11 @@ import { useMemo, useState } from 'react'
 import rawData from '@/data/teams-2026.json'
 import { parseTournament, TournamentDataError } from '@/logic/loadData'
 import { TournamentProvider } from '@/state/TournamentProvider'
+import { usePredictionStore } from '@/state/predictionStore'
 import ErrorScreen from '@/components/ErrorScreen'
 import GroupsView from '@/components/GroupsView'
+import BracketView from '@/components/BracketView'
+import ViewTabs, { type ViewKey } from '@/components/ViewTabs'
 
 export default function App() {
   const parsed = useMemo(() => {
@@ -18,7 +21,9 @@ export default function App() {
     }
   }, [])
 
+  const [view, setView] = useState<ViewKey>('groups')
   const [highlightedTeamId, setHighlightedTeamId] = useState<number | null>(null)
+  const reset = usePredictionStore((state) => state.reset)
 
   if (parsed.error || !parsed.tournament) {
     return <ErrorScreen message={parsed.error ?? 'Données introuvables.'} />
@@ -31,22 +36,47 @@ export default function App() {
   return (
     <TournamentProvider tournament={parsed.tournament}>
       <div className="mx-auto max-w-[1400px] px-4 py-6 md:px-6 md:py-8">
-        <header className="mb-8">
-          <p
-            className="text-xs uppercase tracking-[0.3em]"
-            style={{ color: 'var(--accent)' }}
+        <header className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p
+              className="text-xs uppercase tracking-[0.3em]"
+              style={{ color: 'var(--accent)' }}
+            >
+              {parsed.tournament.tournament}
+            </p>
+            <h1 className="font-display text-3xl font-bold md:text-4xl">
+              World Cup Predictor
+            </h1>
+          </div>
+          <button
+            onClick={reset}
+            className="self-start rounded-lg px-3 py-1.5 text-sm font-medium transition md:self-auto"
+            style={{
+              background: 'var(--bg-elevated)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-muted)',
+            }}
           >
-            {parsed.tournament.tournament}
-          </p>
-          <h1 className="font-display text-3xl font-bold md:text-4xl">
-            World Cup Predictor
-          </h1>
+            Réinitialiser
+          </button>
         </header>
 
-        <GroupsView
-          highlightedTeamId={highlightedTeamId}
-          onSelectTeam={toggleHighlight}
-        />
+        <div className="mb-6">
+          <ViewTabs active={view} onChange={setView} />
+        </div>
+
+        {view === 'groups' ? (
+          <GroupsView
+            highlightedTeamId={highlightedTeamId}
+            onSelectTeam={toggleHighlight}
+          />
+        ) : null}
+        {view === 'bracket' ? (
+          <BracketView
+            highlightedTeamId={highlightedTeamId}
+            onSelectTeam={toggleHighlight}
+          />
+        ) : null}
       </div>
     </TournamentProvider>
   )
