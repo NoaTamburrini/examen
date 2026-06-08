@@ -1,4 +1,4 @@
-import type { BracketMatch, KnockoutRound } from '@/types'
+import type { KnockoutRound } from '@/types'
 import { useTournament } from '@/state/tournamentContext'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useBracket } from '@/hooks/useBracket'
@@ -13,7 +13,9 @@ interface BracketViewProps {
   onSelectTeam: (teamId: number) => void
 }
 
-const CONNECTOR_WIDTH = 28
+const CELL = 92
+const CARD_WIDTH = 224
+const CONNECTOR = 26
 
 function LockedNotice() {
   const { groupIds, fixturesByGroup } = useTournament()
@@ -39,73 +41,6 @@ function LockedNotice() {
   )
 }
 
-function MatchWrapper({
-  match,
-  isFirstRound,
-  isLastRound,
-  pairPosition,
-  highlightedTeamId,
-  onSelectTeam,
-}: {
-  match: BracketMatch
-  isFirstRound: boolean
-  isLastRound: boolean
-  pairPosition: 'top' | 'bottom'
-  highlightedTeamId: number | null
-  onSelectTeam: (teamId: number) => void
-}) {
-  return (
-    <div className="flex flex-1 items-center">
-      {!isFirstRound ? (
-        <div
-          aria-hidden
-          style={{
-            width: CONNECTOR_WIDTH,
-            height: 2,
-            background: 'var(--border-strong)',
-          }}
-        />
-      ) : null}
-
-      <div className="w-56">
-        <KnockoutMatch
-          match={match}
-          highlightedTeamId={highlightedTeamId}
-          onSelectTeam={onSelectTeam}
-        />
-      </div>
-
-      {!isLastRound ? (
-        <div className="flex self-stretch" aria-hidden>
-          <div
-            style={{
-              width: CONNECTOR_WIDTH / 2,
-              height: 2,
-              alignSelf: 'center',
-              background: 'var(--border-strong)',
-            }}
-          />
-          <div
-            style={{
-              width: CONNECTOR_WIDTH / 2,
-              borderColor: 'var(--border-strong)',
-              borderStyle: 'solid',
-              borderWidth:
-                pairPosition === 'top'
-                  ? '2px 2px 0 0'
-                  : '0 2px 2px 0',
-              borderTopRightRadius: pairPosition === 'top' ? 8 : 0,
-              borderBottomRightRadius: pairPosition === 'bottom' ? 8 : 0,
-              marginTop: pairPosition === 'top' ? '50%' : 0,
-              marginBottom: pairPosition === 'bottom' ? '50%' : 0,
-            }}
-          />
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
 export default function BracketView({
   highlightedTeamId,
   onSelectTeam,
@@ -127,29 +62,77 @@ export default function BracketView({
 
       <div className="overflow-x-auto pb-4">
         <div className="flex" style={{ minWidth: 'max-content' }}>
-          {ROUND_ORDER.map((round: KnockoutRound, roundIndex) => (
-            <div key={round} className="flex flex-col">
-              <h3
-                className="mb-3 px-3 text-[11px] font-bold uppercase tracking-[0.18em]"
-                style={{ color: 'var(--text-faint)' }}
-              >
-                {ROUND_LABELS[round]}
-              </h3>
-              <div className="flex flex-1 flex-col">
-                {rounds[round].map((match, matchIndex) => (
-                  <MatchWrapper
-                    key={match.id}
-                    match={match}
-                    isFirstRound={roundIndex === 0}
-                    isLastRound={roundIndex === ROUND_ORDER.length - 1}
-                    pairPosition={matchIndex % 2 === 0 ? 'top' : 'bottom'}
-                    highlightedTeamId={highlightedTeamId}
-                    onSelectTeam={onSelectTeam}
-                  />
-                ))}
+          {ROUND_ORDER.map((round: KnockoutRound, roundIndex) => {
+            const rowHeight = CELL * 2 ** roundIndex
+            const isLast = roundIndex === ROUND_ORDER.length - 1
+            return (
+              <div key={round} className="flex flex-col">
+                <h3
+                  className="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.18em]"
+                  style={{ color: 'var(--text-faint)' }}
+                >
+                  {ROUND_LABELS[round]}
+                </h3>
+                <div className="flex flex-col">
+                  {rounds[round].map((match, matchIndex) => (
+                    <div
+                      key={match.id}
+                      className="flex items-center"
+                      style={{ height: rowHeight }}
+                    >
+                      {roundIndex > 0 ? (
+                        <div
+                          aria-hidden
+                          className="shrink-0"
+                          style={{
+                            width: CONNECTOR,
+                            height: 2,
+                            background: 'var(--border-strong)',
+                          }}
+                        />
+                      ) : null}
+
+                      <div
+                        className="flex shrink-0 items-center justify-center px-3"
+                        style={{ width: CARD_WIDTH + 24 }}
+                      >
+                        <div style={{ width: CARD_WIDTH }}>
+                          <KnockoutMatch
+                            match={match}
+                            highlightedTeamId={highlightedTeamId}
+                            onSelectTeam={onSelectTeam}
+                          />
+                        </div>
+                      </div>
+
+                      {!isLast ? (
+                        <div
+                          aria-hidden
+                          className="shrink-0"
+                          style={{
+                            width: CONNECTOR,
+                            height: rowHeight / 2,
+                            borderRight: '2px solid var(--border-strong)',
+                            borderTop:
+                              matchIndex % 2 === 0
+                                ? '2px solid var(--border-strong)'
+                                : 'none',
+                            borderBottom:
+                              matchIndex % 2 === 1
+                                ? '2px solid var(--border-strong)'
+                                : 'none',
+                            borderTopRightRadius: matchIndex % 2 === 0 ? 10 : 0,
+                            borderBottomRightRadius: matchIndex % 2 === 1 ? 10 : 0,
+                            alignSelf: matchIndex % 2 === 0 ? 'flex-end' : 'flex-start',
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </div>
