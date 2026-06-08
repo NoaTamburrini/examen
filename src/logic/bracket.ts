@@ -36,7 +36,7 @@ interface GroupResult {
   standing: Standing
 }
 
-function compareForSeeding(a: Standing, b: Standing): number {
+const compareForSeeding = (a: Standing, b: Standing): number => {
   if (b.points !== a.points) return b.points - a.points
   if (b.goalDifference !== a.goalDifference) {
     return b.goalDifference - a.goalDifference
@@ -45,10 +45,10 @@ function compareForSeeding(a: Standing, b: Standing): number {
   return a.team.fifaRanking - b.team.fifaRanking
 }
 
-export function collectQualified(
+export const collectQualified = (
   standings: Record<GroupId, Standing[]>,
   bestThirdCount: number,
-): QualifiedTeam[] {
+): QualifiedTeam[] => {
   const winners: GroupResult[] = []
   const runnersUp: GroupResult[] = []
   const thirds: ThirdPlaceEntry[] = []
@@ -81,13 +81,13 @@ export function collectQualified(
   return [...qualifiedWinners, ...qualifiedRunners, ...qualifiedThirds]
 }
 
-function seedLabel(entry: QualifiedTeam): string {
+const seedLabel = (entry: QualifiedTeam): string => {
   if (entry.position === 1) return `1${entry.group}`
   if (entry.position === 2) return `2${entry.group}`
   return `3${entry.group}`
 }
 
-export function buildRound32(qualified: QualifiedTeam[]): BracketMatch[] {
+export const buildRound32 = (qualified: QualifiedTeam[]): BracketMatch[] => {
   const seeds = qualified
   const matches: BracketMatch[] = []
   for (let slot = 0; slot < ROUND_SIZE.R32; slot += 1) {
@@ -108,11 +108,10 @@ export function buildRound32(qualified: QualifiedTeam[]): BracketMatch[] {
   return matches
 }
 
-function prevRound(round: KnockoutRound): KnockoutRound {
-  return ROUND_ORDER[ROUND_ORDER.indexOf(round) - 1]
-}
+const prevRound = (round: KnockoutRound): KnockoutRound =>
+  ROUND_ORDER[ROUND_ORDER.indexOf(round) - 1]
 
-function emptyRound(round: KnockoutRound): BracketMatch[] {
+const emptyRound = (round: KnockoutRound): BracketMatch[] => {
   const from = ROUND_LABELS[prevRound(round)]
   return Array.from({ length: ROUND_SIZE[round] }, (_, slot) => ({
     id: `${round}-${slot + 1}`,
@@ -127,10 +126,10 @@ function emptyRound(round: KnockoutRound): BracketMatch[] {
   }))
 }
 
-export function buildBracket(
+export const buildBracket = (
   qualified: QualifiedTeam[],
   inputs: KoInputs,
-): Record<KnockoutRound, BracketMatch[]> {
+): Record<KnockoutRound, BracketMatch[]> => {
   const bracket = {
     R32: buildRound32(qualified),
     R16: emptyRound('R16'),
@@ -169,8 +168,6 @@ export function buildBracket(
   return bracket
 }
 
-export function getChampion(
+export const getChampion = (
   bracket: Record<KnockoutRound, BracketMatch[]>,
-): number | null {
-  return bracket.F[0]?.winnerId ?? null
-}
+): number | null => bracket.F[0]?.winnerId ?? null

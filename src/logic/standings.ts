@@ -10,19 +10,17 @@ interface Tally {
   points: number
 }
 
-function emptyTally(): Tally {
-  return {
-    played: 0,
-    won: 0,
-    drawn: 0,
-    lost: 0,
-    goalsFor: 0,
-    goalsAgainst: 0,
-    points: 0,
-  }
-}
+const emptyTally = (): Tally => ({
+  played: 0,
+  won: 0,
+  drawn: 0,
+  lost: 0,
+  goalsFor: 0,
+  goalsAgainst: 0,
+  points: 0,
+})
 
-function applyResult(tally: Tally, scored: number, conceded: number): void {
+const applyResult = (tally: Tally, scored: number, conceded: number): void => {
   tally.played += 1
   tally.goalsFor += scored
   tally.goalsAgainst += conceded
@@ -37,12 +35,12 @@ function applyResult(tally: Tally, scored: number, conceded: number): void {
   }
 }
 
-function tallyTeams(
+const tallyTeams = (
   teamIds: number[],
   fixtures: GroupFixture[],
   scores: GroupScores,
   onlyAmong?: Set<number>,
-): Map<number, Tally> {
+): Map<number, Tally> => {
   const tallies = new Map<number, Tally>(teamIds.map(id => [id, emptyTally()]))
 
   for (const fixture of fixtures) {
@@ -63,7 +61,7 @@ function tallyTeams(
   return tallies
 }
 
-function overallCompare(a: Tally, b: Tally): number {
+const overallCompare = (a: Tally, b: Tally): number => {
   if (b.points !== a.points) return b.points - a.points
   const aDiff = a.goalsFor - a.goalsAgainst
   const bDiff = b.goalsFor - b.goalsAgainst
@@ -71,12 +69,12 @@ function overallCompare(a: Tally, b: Tally): number {
   return b.goalsFor - a.goalsFor
 }
 
-function breakTie(
+const breakTie = (
   tiedIds: number[],
   teamById: Map<number, Team>,
   fixtures: GroupFixture[],
   scores: GroupScores,
-): number[] {
+): number[] => {
   if (tiedIds.length < 2) return tiedIds
 
   const headToHead = tallyTeams(tiedIds, fixtures, scores, new Set(tiedIds))
@@ -88,11 +86,11 @@ function breakTie(
   })
 }
 
-export function computeGroupStanding(
+export const computeGroupStanding = (
   teams: Team[],
   fixtures: GroupFixture[],
   scores: GroupScores,
-): Standing[] {
+): Standing[] => {
   const teamById = new Map(teams.map(team => [team.id, team]))
   const teamIds = teams.map(team => team.id)
   const tallies = tallyTeams(teamIds, fixtures, scores)
@@ -136,12 +134,11 @@ export function computeGroupStanding(
   })
 }
 
-export function isGroupComplete(
+export const isGroupComplete = (
   fixtures: GroupFixture[],
   scores: GroupScores,
-): boolean {
-  return fixtures.every(fixture => {
+): boolean =>
+  fixtures.every(fixture => {
     const score = scores[fixture.id]
     return Boolean(score) && score.home !== null && score.away !== null
   })
-}

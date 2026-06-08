@@ -4,7 +4,7 @@ export type Theme = 'dark' | 'light'
 
 const STORAGE_KEY = 'theme'
 
-function getInitialTheme(): Theme {
+const getInitialTheme = (): Theme => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'dark' || stored === 'light') return stored
@@ -17,7 +17,7 @@ function getInitialTheme(): Theme {
   return prefersLight ? 'light' : 'dark'
 }
 
-export function useTheme(): [Theme, () => void] {
+export const useTheme = (): [Theme, () => void] => {
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
   useEffect(() => {

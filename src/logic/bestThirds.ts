@@ -5,7 +5,9 @@ export interface ThirdPlaceEntry {
   standing: Standing
 }
 
-export function rankThirdPlaces(thirds: ThirdPlaceEntry[]): ThirdPlaceEntry[] {
+export const rankThirdPlaces = (
+  thirds: ThirdPlaceEntry[],
+): ThirdPlaceEntry[] => {
   return [...thirds].sort((a, b) => {
     const sa = a.standing
     const sb = b.standing
@@ -18,10 +20,10 @@ export function rankThirdPlaces(thirds: ThirdPlaceEntry[]): ThirdPlaceEntry[] {
   })
 }
 
-export function selectBestThirds(
+export const selectBestThirds = (
   thirds: ThirdPlaceEntry[],
   count: number,
-): QualifiedTeam[] {
+): QualifiedTeam[] => {
   return rankThirdPlaces(thirds)
     .slice(0, count)
     .map(entry => ({

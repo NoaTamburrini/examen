@@ -13,7 +13,7 @@ export interface BracketData {
   championId: number | null
 }
 
-export function useBracket(): BracketData {
+export const useBracket = (): BracketData => {
   const { groupIds, fixturesByGroup, tournament } = useTournament()
   const standings = useStandings()
   const groupScores = usePredictionStore(state => state.groupScores)

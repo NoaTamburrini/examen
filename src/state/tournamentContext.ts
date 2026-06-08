@@ -14,7 +14,7 @@ export const TournamentContext = createContext<TournamentContextValue | null>(
   null,
 )
 
-export function useTournament(): TournamentContextValue {
+export const useTournament = (): TournamentContextValue => {
   const value = useContext(TournamentContext)
   if (!value) {
     throw new Error(

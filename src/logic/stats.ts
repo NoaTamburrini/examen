@@ -24,12 +24,12 @@ export interface TournamentStats {
   champion: Team | null
 }
 
-export function computeStats(
+export const computeStats = (
   standings: Record<GroupId, Standing[]>,
   qualified: QualifiedTeam[],
   rounds: Record<KnockoutRound, BracketMatch[]> | null,
   teamById: Map<number, Team>,
-): TournamentStats {
+): TournamentStats => {
   const allRows = Object.values(standings).flat()
 
   let totalGoals = 0

@@ -14,9 +14,8 @@ interface PredictionState {
 const STORAGE_KEY = 'wcp'
 const STORAGE_VERSION = 1
 
-function isEmptyScore(score?: PartialScore): boolean {
-  return !score || (score.home === null && score.away === null)
-}
+const isEmptyScore = (score?: PartialScore): boolean =>
+  !score || (score.home === null && score.away === null)
 
 export const usePredictionStore = create<PredictionState>()(
   persist(

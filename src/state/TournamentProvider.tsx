@@ -7,13 +7,13 @@ import {
 import type { GroupFixture, GroupId, Tournament } from '@/types'
 import { useMemo, type ReactNode } from 'react'
 
-export function TournamentProvider({
+export const TournamentProvider = ({
   tournament,
   children,
 }: {
   tournament: Tournament
   children: ReactNode
-}) {
+}) => {
   const value = useMemo<TournamentContextValue>(() => {
     const fixtures = buildAllFixtures(tournament.teams)
     const fixturesByGroup = {} as Record<GroupId, GroupFixture[]>

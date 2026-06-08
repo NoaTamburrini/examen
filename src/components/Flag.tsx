@@ -4,7 +4,7 @@ interface FlagProps {
   size?: number
 }
 
-export default function Flag({ code, name, size = 24 }: FlagProps) {
+const Flag = ({ code, name, size = 24 }: FlagProps) => {
   return (
     <img
       src={`https://flagcdn.com/w160/${code}.png`}
@@ -21,3 +21,5 @@ export default function Flag({ code, name, size = 24 }: FlagProps) {
     />
   )
 }
+
+export default Flag

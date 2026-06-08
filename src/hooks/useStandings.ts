@@ -4,7 +4,7 @@ import { useTournament } from '@/state/tournamentContext'
 import type { GroupId, Standing } from '@/types'
 import { useMemo } from 'react'
 
-export function useStandings(): Record<GroupId, Standing[]> {
+export const useStandings = (): Record<GroupId, Standing[]> => {
   const { groupIds, teamsByGroup, fixturesByGroup } = useTournament()
   const groupScores = usePredictionStore(state => state.groupScores)
 

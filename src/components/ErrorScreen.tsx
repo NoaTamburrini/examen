@@ -2,7 +2,7 @@ interface ErrorScreenProps {
   message: string
 }
 
-export default function ErrorScreen({ message }: ErrorScreenProps) {
+const ErrorScreen = ({ message }: ErrorScreenProps) => {
   return (
     <div className="min-h-dvh grid place-items-center px-6">
       <div
@@ -30,3 +30,5 @@ export default function ErrorScreen({ message }: ErrorScreenProps) {
     </div>
   )
 }
+
+export default ErrorScreen

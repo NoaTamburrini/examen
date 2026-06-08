@@ -8,16 +8,16 @@ export interface KoEntry {
   penalties?: MatchScore
 }
 
-function complete(score?: PartialScore): MatchScore | undefined {
+const complete = (score?: PartialScore): MatchScore | undefined => {
   if (!score || score.home === null || score.away === null) return undefined
   return { home: score.home, away: score.away }
 }
 
-export function toKoEntry(
+export const toKoEntry = (
   homeId: number,
   awayId: number,
   input: KoInput,
-): KoEntry {
+): KoEntry => {
   return {
     homeId,
     awayId,
@@ -33,13 +33,13 @@ export interface KoOutcome {
   needsPenalties: boolean
 }
 
-function aggregate(a?: MatchScore, b?: MatchScore): MatchScore | null {
+const aggregate = (a?: MatchScore, b?: MatchScore): MatchScore | null => {
   if (!a) return null
   if (!b) return a
   return { home: a.home + b.home, away: a.away + b.away }
 }
 
-export function resolveKnockout(entry: KoEntry): KoOutcome {
+export const resolveKnockout = (entry: KoEntry): KoOutcome => {
   const { score, extraTime, penalties } = entry
 
   if (!score) {
@@ -79,7 +79,7 @@ export function resolveKnockout(entry: KoEntry): KoOutcome {
   }
 }
 
-export function buildKoResult(entry: KoEntry): KoResult | null {
+export const buildKoResult = (entry: KoEntry): KoResult | null => {
   const outcome = resolveKnockout(entry)
   if (outcome.winnerId === null) return null
   return {

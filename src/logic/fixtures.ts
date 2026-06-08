@@ -10,10 +10,10 @@ const PAIRINGS: ReadonlyArray<readonly [number, number]> = [
   [1, 2],
 ]
 
-export function buildGroupFixtures(
+export const buildGroupFixtures = (
   group: GroupId,
   teams: Team[],
-): GroupFixture[] {
+): GroupFixture[] => {
   if (teams.length !== 4) {
     throw new Error(`Le groupe ${group} doit contenir exactement 4 équipes.`)
   }
@@ -25,7 +25,7 @@ export function buildGroupFixtures(
   }))
 }
 
-export function buildAllFixtures(teams: Team[]): GroupFixture[] {
+export const buildAllFixtures = (teams: Team[]): GroupFixture[] => {
   const byGroup = teamsByGroup(teams)
   return GROUP_IDS.flatMap(group => buildGroupFixtures(group, byGroup[group]))
 }

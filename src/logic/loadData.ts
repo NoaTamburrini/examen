@@ -31,7 +31,7 @@ const CONFEDERATIONS: Confederation[] = [
   'OFC',
 ]
 
-function isTeam(value: unknown): value is Team {
+const isTeam = (value: unknown): value is Team => {
   if (typeof value !== 'object' || value === null) return false
   const team = value as Record<string, unknown>
   return (
@@ -46,7 +46,7 @@ function isTeam(value: unknown): value is Team {
   )
 }
 
-export function parseTournament(raw: unknown): Tournament {
+export const parseTournament = (raw: unknown): Tournament => {
   if (typeof raw !== 'object' || raw === null) {
     throw new TournamentDataError('Données du tournoi illisibles.')
   }
@@ -86,11 +86,10 @@ export function parseTournament(raw: unknown): Tournament {
   return data as unknown as Tournament
 }
 
-export function indexTeamsById(teams: Team[]): Map<number, Team> {
-  return new Map(teams.map(team => [team.id, team]))
-}
+export const indexTeamsById = (teams: Team[]): Map<number, Team> =>
+  new Map(teams.map(team => [team.id, team]))
 
-export function teamsByGroup(teams: Team[]): Record<GroupId, Team[]> {
+export const teamsByGroup = (teams: Team[]): Record<GroupId, Team[]> => {
   const result = {} as Record<GroupId, Team[]>
   for (const groupId of GROUP_IDS) {
     result[groupId] = teams
