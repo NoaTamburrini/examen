@@ -6,6 +6,7 @@ import { usePredictionStore } from '@/state/predictionStore'
 import ErrorScreen from '@/components/ErrorScreen'
 import GroupsView from '@/components/GroupsView'
 import BracketView from '@/components/BracketView'
+import StatsView from '@/components/StatsView'
 import ViewTabs, { type ViewKey } from '@/components/ViewTabs'
 
 export default function App() {
@@ -77,6 +78,7 @@ export default function App() {
             onSelectTeam={toggleHighlight}
           />
         ) : null}
+        {view === 'stats' ? <StatsView onSelectTeam={toggleHighlight} /> : null}
       </div>
     </TournamentProvider>
   )
