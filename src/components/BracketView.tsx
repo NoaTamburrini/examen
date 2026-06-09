@@ -13,7 +13,7 @@ interface BracketViewProps {
   onSelectTeam: (teamId: number) => void
 }
 
-const ROW = 116
+const ROW = 150
 const CARD_WIDTH = 224
 const CONNECTOR = 26
 
@@ -66,7 +66,7 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
         <div className="flex" style={{ minWidth: 'max-content' }}>
           {ROUND_ORDER.map((round: KnockoutRound, roundIndex) => {
             const isLast = roundIndex === ROUND_ORDER.length - 1
-            const slotGap = bodyHeight / rounds[round].length
+            const slotGap = ROW * 2 ** roundIndex
             return (
               <div key={round} className="flex flex-col">
                 <h3
@@ -74,15 +74,16 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
                   style={{ color: 'var(--text-faint)' }}>
                   {ROUND_LABELS[round]}
                 </h3>
-                <div
-                  className="flex flex-col justify-around"
-                  style={{ minHeight: bodyHeight }}>
+                <div className="flex flex-col" style={{ height: bodyHeight }}>
                   {rounds[round].map((match, matchIndex) => (
-                    <div key={match.id} className="flex items-stretch">
+                    <div
+                      key={match.id}
+                      className="flex items-center"
+                      style={{ height: slotGap }}>
                       {roundIndex > 0 ? (
                         <div
                           aria-hidden
-                          className="shrink-0 self-center"
+                          className="shrink-0"
                           style={{
                             width: CONNECTOR,
                             height: 2,
@@ -106,16 +107,24 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
                       {!isLast ? (
                         <div
                           aria-hidden
-                          className="shrink-0 self-center"
+                          className="shrink-0 self-start"
                           style={{
                             width: CONNECTOR,
-                            height: slotGap,
-                            borderRight: '2px solid var(--border-strong)',
-                            borderTop: '2px solid var(--border-strong)',
-                            borderBottom: '2px solid var(--border-strong)',
-                            borderRadius: '0 10px 10px 0',
+                            height: slotGap / 2,
                             marginTop:
-                              matchIndex % 2 === 0 ? slotGap / 2 : -slotGap / 2,
+                              matchIndex % 2 === 0 ? slotGap / 2 : 0,
+                            borderRight: '2px solid var(--border-strong)',
+                            borderTop:
+                              matchIndex % 2 === 0
+                                ? '2px solid var(--border-strong)'
+                                : 'none',
+                            borderBottom:
+                              matchIndex % 2 === 1
+                                ? '2px solid var(--border-strong)'
+                                : 'none',
+                            borderTopRightRadius: matchIndex % 2 === 0 ? 10 : 0,
+                            borderBottomRightRadius:
+                              matchIndex % 2 === 1 ? 10 : 0,
                           }}
                         />
                       ) : null}
