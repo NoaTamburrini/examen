@@ -13,7 +13,7 @@ interface BracketViewProps {
   onSelectTeam: (teamId: number) => void
 }
 
-const CELL = 92
+const ROW = 116
 const CARD_WIDTH = 224
 const CONNECTOR = 26
 
@@ -56,6 +56,7 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
   const rounds = bracket.rounds
   const champion =
     bracket.championId !== null ? teamById.get(bracket.championId) : null
+  const bodyHeight = rounds.R32.length * ROW
 
   return (
     <div className="grid gap-6">
@@ -64,25 +65,24 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
       <div className="overflow-x-auto pb-4">
         <div className="flex" style={{ minWidth: 'max-content' }}>
           {ROUND_ORDER.map((round: KnockoutRound, roundIndex) => {
-            const rowHeight = CELL * 2 ** roundIndex
             const isLast = roundIndex === ROUND_ORDER.length - 1
+            const slotGap = bodyHeight / rounds[round].length
             return (
               <div key={round} className="flex flex-col">
                 <h3
-                  className="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.18em]"
+                  className="mb-3 px-3 text-[11px] font-bold uppercase tracking-[0.18em]"
                   style={{ color: 'var(--text-faint)' }}>
                   {ROUND_LABELS[round]}
                 </h3>
-                <div className="flex flex-col">
+                <div
+                  className="flex flex-col justify-around"
+                  style={{ minHeight: bodyHeight }}>
                   {rounds[round].map((match, matchIndex) => (
-                    <div
-                      key={match.id}
-                      className="flex items-center"
-                      style={{ height: rowHeight }}>
+                    <div key={match.id} className="flex items-stretch">
                       {roundIndex > 0 ? (
                         <div
                           aria-hidden
-                          className="shrink-0"
+                          className="shrink-0 self-center"
                           style={{
                             width: CONNECTOR,
                             height: 2,
@@ -92,7 +92,7 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
                       ) : null}
 
                       <div
-                        className="flex shrink-0 items-center justify-center px-3"
+                        className="flex shrink-0 items-center px-3"
                         style={{ width: CARD_WIDTH + 24 }}>
                         <div style={{ width: CARD_WIDTH }}>
                           <KnockoutMatch
@@ -106,24 +106,16 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
                       {!isLast ? (
                         <div
                           aria-hidden
-                          className="shrink-0"
+                          className="shrink-0 self-center"
                           style={{
                             width: CONNECTOR,
-                            height: rowHeight / 2,
+                            height: slotGap,
                             borderRight: '2px solid var(--border-strong)',
-                            borderTop:
-                              matchIndex % 2 === 0
-                                ? '2px solid var(--border-strong)'
-                                : 'none',
-                            borderBottom:
-                              matchIndex % 2 === 1
-                                ? '2px solid var(--border-strong)'
-                                : 'none',
-                            borderTopRightRadius: matchIndex % 2 === 0 ? 10 : 0,
-                            borderBottomRightRadius:
-                              matchIndex % 2 === 1 ? 10 : 0,
-                            alignSelf:
-                              matchIndex % 2 === 0 ? 'flex-end' : 'flex-start',
+                            borderTop: '2px solid var(--border-strong)',
+                            borderBottom: '2px solid var(--border-strong)',
+                            borderRadius: '0 10px 10px 0',
+                            marginTop:
+                              matchIndex % 2 === 0 ? slotGap / 2 : -slotGap / 2,
                           }}
                         />
                       ) : null}

@@ -1,6 +1,5 @@
 import MatchCard from '@/components/MatchCard'
 import ScoreInput from '@/components/ScoreInput'
-import { resolveKnockout, toKoEntry } from '@/logic/knockout'
 import { usePredictionStore } from '@/state/predictionStore'
 import { useTournament } from '@/state/tournamentContext'
 import type { BracketMatch, KoInput, PartialScore } from '@/types'
@@ -58,9 +57,19 @@ const KnockoutMatch = ({
   const ready = home !== null && away !== null
   const current = input ?? emptyInput()
 
-  const patch = (part: Partial<KoInput>) => {
-    setKoInput(match.id, { ...current, ...part })
-  }
+  const isDraw = (score?: PartialScore): boolean =>
+    score != null &&
+    score.home !== null &&
+    score.away !== null &&
+    score.home === score.away
+
+  const isComplete = (score?: PartialScore): boolean =>
+    score != null && score.home !== null && score.away !== null
+
+  const sum = (a?: PartialScore, b?: PartialScore): PartialScore => ({
+    home: (a?.home ?? 0) + (b?.home ?? 0),
+    away: (a?.away ?? 0) + (b?.away ?? 0),
+  })
 
   const updateScore = (
     field: 'score' | 'extraTime' | 'penalties',
@@ -68,16 +77,26 @@ const KnockoutMatch = ({
     value: number | null,
   ) => {
     const existing = current[field] ?? { home: null, away: null }
-    patch({ [field]: { ...existing, [side]: value } })
+    const next: KoInput = { ...current, [field]: { ...existing, [side]: value } }
+
+    if (!isDraw(next.score)) {
+      delete next.extraTime
+      delete next.penalties
+    } else if (
+      !isComplete(next.extraTime) ||
+      !isDraw(sum(next.score, next.extraTime))
+    ) {
+      delete next.penalties
+    }
+
+    setKoInput(match.id, next)
   }
 
-  const outcome =
-    ready && match.homeId !== null && match.awayId !== null
-      ? resolveKnockout(toKoEntry(match.homeId, match.awayId, current))
-      : null
-
-  const showExtraTime = outcome?.needsExtraTime || Boolean(current.extraTime)
-  const showPenalties = outcome?.needsPenalties || Boolean(current.penalties)
+  const showExtraTime = isDraw(current.score)
+  const showPenalties =
+    showExtraTime &&
+    isComplete(current.extraTime) &&
+    isDraw(sum(current.score, current.extraTime))
 
   const footer =
     ready && (showExtraTime || showPenalties) ? (
