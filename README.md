@@ -128,6 +128,45 @@ Si un match à élimination directe est nul au temps réglementaire, l'interface
 - **Polices système** : aucune police externe chargée, pour des performances optimales et un fonctionnement hors-ligne.
 - **Drapeaux via flagcdn.com** : `https://flagcdn.com/w160/{code}.png`, en gérant les codes spéciaux `gb-eng` (Angleterre) et `gb-sct` (Écosse).
 
+## Difficultés rencontrées
+
+### Flash de thème au rechargement (FOUC)
+
+Le bug le plus pénible à diagnostiquer. Le thème (clair/sombre) est appliqué par React via un `useEffect` dans le hook `useTheme` : il pose l'attribut `data-theme` sur `<html>` **après** que React a monté. Conséquence au rechargement de la page : le navigateur peignait d'abord le thème par défaut des tokens CSS (`:root` = sombre), **puis** React s'exécutait et basculait sur le thème stocké. On voyait donc un **flash sombre → clair** systématique à chaque reload, même quand la préférence enregistrée était « clair ».
+
+C'est un *Flash Of Unstyled Content* classique : le style correct n'est connu qu'après l'hydratation, trop tard pour le premier paint.
+
+**Solution** : un petit script **bloquant et synchrone** placé dans le `<head>` de `index.html`, exécuté **avant** le premier rendu. Il lit la même clé `localStorage` (`theme`), retombe sur la préférence système puis sur « sombre », et pose `data-theme` immédiatement :
+
+```html
+<script>
+  ;(() => {
+    try {
+      const stored = localStorage.getItem('theme')
+      const theme =
+        stored === 'dark' || stored === 'light'
+          ? stored
+          : window.matchMedia('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'dark'
+      document.documentElement.setAttribute('data-theme', theme)
+    } catch {
+      document.documentElement.setAttribute('data-theme', 'dark')
+    }
+  })()
+</script>
+```
+
+C'est l'un des rares cas où un script *render-blocking* est souhaitable : il pèse ~250 octets, s'exécute en moins d'une milliseconde, et le bon thème est appliqué dès le premier pixel. C'est aussi l'approche utilisée par `next-themes` et le thème officiel de Tailwind. Le hook React reste en place pour la bascule au clic et la persistance ; le script ne fait que pré-régler l'état avant le paint.
+
+### Alignement du tableau à élimination directe
+
+Aligner verticalement chaque match au centre exact de ses deux qualifiés (et éviter qu'une carte avec prolongation déborde sur sa voisine) a demandé plusieurs itérations. La solution retenue est déterministe : chaque match occupe une cellule de hauteur fixe `ROW × 2^tour` et est centré dedans, ce qui place mécaniquement chaque match du tour suivant au milieu de ses deux parents, sans accumulation d'erreur, quelle que soit la profondeur.
+
+### Saisies de prolongation/tirs au but résiduelles
+
+Quand un score nul déclenchait la prolongation puis qu'on le changeait en score décisif, les blocs prolongation/tirs au but restaient affichés avec des valeurs périmées. La correction nettoie ces saisies dès qu'un tour devient décisif, et n'affiche les tirs au but qu'après une prolongation complète et toujours nulle.
+
 ## Tests
 
 ```bash
