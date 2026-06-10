@@ -81,12 +81,6 @@ export const collectQualified = (
   return [...qualifiedWinners, ...qualifiedRunners, ...qualifiedThirds]
 }
 
-const seedLabel = (entry: QualifiedTeam): string => {
-  if (entry.position === 1) return `1${entry.group}`
-  if (entry.position === 2) return `2${entry.group}`
-  return `3${entry.group}`
-}
-
 export const buildRound32 = (qualified: QualifiedTeam[]): BracketMatch[] => {
   const seeds = qualified
   const matches: BracketMatch[] = []
@@ -99,8 +93,6 @@ export const buildRound32 = (qualified: QualifiedTeam[]): BracketMatch[] => {
       slot,
       homeId: home ? home.team.id : null,
       awayId: away ? away.team.id : null,
-      homeSource: home ? seedLabel(home) : '',
-      awaySource: away ? seedLabel(away) : '',
       winnerId: null,
       result: null,
     })
@@ -108,23 +100,16 @@ export const buildRound32 = (qualified: QualifiedTeam[]): BracketMatch[] => {
   return matches
 }
 
-const prevRound = (round: KnockoutRound): KnockoutRound =>
-  ROUND_ORDER[ROUND_ORDER.indexOf(round) - 1]
-
-const emptyRound = (round: KnockoutRound): BracketMatch[] => {
-  const from = ROUND_LABELS[prevRound(round)]
-  return Array.from({ length: ROUND_SIZE[round] }, (_, slot) => ({
+const emptyRound = (round: KnockoutRound): BracketMatch[] =>
+  Array.from({ length: ROUND_SIZE[round] }, (_, slot) => ({
     id: `${round}-${slot + 1}`,
     round,
     slot,
     homeId: null,
     awayId: null,
-    homeSource: `Vainqueur ${from} ${slot * 2 + 1}`,
-    awaySource: `Vainqueur ${from} ${slot * 2 + 2}`,
     winnerId: null,
     result: null,
   }))
-}
 
 export const buildBracket = (
   qualified: QualifiedTeam[],

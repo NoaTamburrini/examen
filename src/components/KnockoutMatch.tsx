@@ -126,13 +126,11 @@ const KnockoutMatch = ({
     <MatchCard
       home={{
         team: home,
-        placeholder: match.homeSource,
         score: current.score?.home ?? null,
         onScore: v => updateScore('score', 'home', v),
       }}
       away={{
         team: away,
-        placeholder: match.awaySource,
         score: current.score?.away ?? null,
         onScore: v => updateScore('score', 'away', v),
       }}

@@ -122,8 +122,6 @@ export interface BracketMatch {
   slot: number
   homeId: number | null
   awayId: number | null
-  homeSource: string
-  awaySource: string
   winnerId: number | null
   result: KoResult | null
 }
