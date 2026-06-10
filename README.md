@@ -159,9 +159,18 @@ C'est un *Flash Of Unstyled Content* classique : le style correct n'est connu qu
 
 C'est l'un des rares cas où un script *render-blocking* est souhaitable : il pèse ~250 octets, s'exécute en moins d'une milliseconde, et le bon thème est appliqué dès le premier pixel. C'est aussi l'approche utilisée par `next-themes` et le thème officiel de Tailwind. Le hook React reste en place pour la bascule au clic et la persistance ; le script ne fait que pré-régler l'état avant le paint.
 
-### Alignement du tableau à élimination directe
+### Affichage du tableau à élimination directe en CSS
 
-Aligner verticalement chaque match au centre exact de ses deux qualifiés (et éviter qu'une carte avec prolongation déborde sur sa voisine) a demandé plusieurs itérations. La solution retenue est déterministe : chaque match occupe une cellule de hauteur fixe `ROW × 2^tour` et est centré dedans, ce qui place mécaniquement chaque match du tour suivant au milieu de ses deux parents, sans accumulation d'erreur, quelle que soit la profondeur.
+C'est la partie la plus délicate de l'interface. Un bracket de tournoi n'est pas une mise en page naturelle pour le web : chaque match d'un tour doit être centré **exactement au milieu vertical de ses deux matchs sources** du tour précédent, l'espacement vertical doit **doubler à chaque tour** (16 matchs en 16èmes, puis 8, 4, 2, 1), et il faut tracer des **connecteurs en « S »** qui relient chaque paire au match suivant. Le tout en restant aligné quelle que soit la profondeur, sur cinq colonnes, avec scroll horizontal sur mobile.
+
+Plusieurs approches ont été essayées avant d'arriver à un résultat propre :
+
+- **Flexbox `justify-around`** (espacement réparti automatiquement) : séduisant car « ça centre tout seul », mais la répartition se fait *autour* de chaque élément, ce qui introduit une petite erreur qui **s'accumule tour après tour**. Résultat : la finale finissait décalée tout en bas du tableau au lieu d'être centrée. Abandonné.
+- **Hauteurs `min-height` qui grandissent** : dès qu'une carte affichait une prolongation (footer plus haut), sa colonne s'agrandissait mais pas les autres, et l'alignement entre colonnes se désynchronisait — la carte de prolongation **débordait sur sa voisine**.
+
+**Solution retenue, déterministe** : chaque match occupe une **cellule de hauteur fixe** `ROW × 2^tour` et est centré dedans (`ROW = 150 px`, assez grand pour contenir une carte avec prolongation sans débordement). Comme la hauteur double à chaque tour, le centre d'un match du tour `n+1` tombe **mécaniquement** au milieu des centres de ses deux cellules parentes — aucun calcul de position, aucune accumulation d'erreur, peu importe la profondeur. Les connecteurs en S sont dessinés avec de simples bordures CSS (`border-right` + `border-top`/`border-bottom` arrondies) dont la hauteur vaut la demi-cellule, et qui pointent vers le haut ou le bas selon la parité du match dans sa paire.
+
+Le bracket est codé à la main (≈140 lignes), sans librairie type `react-tournament-brackets`, pour rester maîtrisable et défendable.
 
 ### Saisies de prolongation/tirs au but résiduelles
 
