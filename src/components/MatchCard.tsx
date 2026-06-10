@@ -56,13 +56,13 @@ const MatchCard = ({
           disabled={!clickable}
           onClick={() => slot.team && onSelectTeam?.(slot.team.id)}
           className="flex min-w-0 flex-1 items-center gap-2 text-left disabled:cursor-default">
-          <AnimatePresence mode="popLayout" initial={false}>
+          <AnimatePresence initial={false} mode="wait">
             <motion.span
               key={slot.team?.id ?? 'tbd'}
               initial={reduceMotion ? false : { opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={reduceMotion ? undefined : { opacity: 0, x: 8 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 26 }}
+              exit={reduceMotion ? undefined : { opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 26, opacity: { duration: 0.12 } }}
               className="flex min-w-0 flex-1 items-center gap-2">
               {slot.team ? (
                 <>
