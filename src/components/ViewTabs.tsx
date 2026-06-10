@@ -1,4 +1,4 @@
-export type ViewKey = 'groups' | 'bracket' | 'stats'
+import type { ViewKey } from '@/types'
 
 interface ViewTabsProps {
   active: ViewKey

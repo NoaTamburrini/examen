@@ -125,3 +125,5 @@ export interface BracketMatch {
   winnerId: number | null
   result: KoResult | null
 }
+
+export type ViewKey = 'groups' | 'bracket' | 'stats'
