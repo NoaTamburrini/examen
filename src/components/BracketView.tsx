@@ -111,8 +111,7 @@ const BracketView = ({ highlightedTeamId, onSelectTeam }: BracketViewProps) => {
                           style={{
                             width: CONNECTOR,
                             height: slotGap / 2,
-                            marginTop:
-                              matchIndex % 2 === 0 ? slotGap / 2 : 0,
+                            marginTop: matchIndex % 2 === 0 ? slotGap / 2 : 0,
                             borderRight: '2px solid var(--border-strong)',
                             borderTop:
                               matchIndex % 2 === 0

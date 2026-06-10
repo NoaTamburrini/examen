@@ -77,7 +77,10 @@ const KnockoutMatch = ({
     value: number | null,
   ) => {
     const existing = current[field] ?? { home: null, away: null }
-    const next: KoInput = { ...current, [field]: { ...existing, [side]: value } }
+    const next: KoInput = {
+      ...current,
+      [field]: { ...existing, [side]: value },
+    }
 
     if (!isDraw(next.score)) {
       delete next.extraTime
