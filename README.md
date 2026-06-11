@@ -176,6 +176,12 @@ Le bracket est codé à la main (≈140 lignes), sans librairie type `react-tour
 
 Quand un score nul déclenchait la prolongation puis qu'on le changeait en score décisif, les blocs prolongation/tirs au but restaient affichés avec des valeurs périmées. La correction nettoie ces saisies dès qu'un tour devient décisif, et n'affiche les tirs au but qu'après une prolongation complète et toujours nulle.
 
+### Zoom automatique sur mobile à la saisie d'un score
+
+Sur iOS, Safari **zoome automatiquement** la page dès qu'on place le curseur dans un champ de saisie dont la police fait **moins de 16 px**. Les cases de score étant volontairement petites et compactes (`text-sm`, 14 px), chaque clic dans une case provoquait un zoom intempestif très désagréable sur téléphone.
+
+Deux solutions existent. La première — ajouter `maximum-scale=1` au `<meta viewport>` — désactive aussi le zoom **volontaire** par pincement, ce qui casse l'accessibilité pour les malvoyants ; elle a été écartée. La solution retenue est celle recommandée par Apple et MDN : **fixer la police des champs de score à exactement 16 px** (`text-base`), le seuil précis en dessous duquel iOS déclenche le zoom. Le zoom auto disparaît, tout en laissant le pincement manuel intact. Comme tous les champs (poules, prolongations, tirs au but) partagent le même composant `ScoreInput`, le correctif s'applique partout d'un seul coup.
+
 ## Tests
 
 ```bash
