@@ -91,7 +91,6 @@ const KnockoutMatch = ({
     ) {
       delete next.penalties
     }
-
     setKoInput(match.id, next)
   }
 
